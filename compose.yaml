@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=expenses_tracker_db'
+      - 'POSTGRES_USER=expenses_usr'
+      - 'POSTGRES_PASSWORD=expenses_password'
+    ports:
+      - 5432:5432/tcp

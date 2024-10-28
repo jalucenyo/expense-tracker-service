@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: expenses-tracker-service
+  devtools:
+    add-properties: true
+  mvc:
+    problem details:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/expenses_tracker_db
+    username: expenses_usr111
+    password: expenses_password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    properties:
+      hibernate.hibernate.format_sql: true
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    enabled: true
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /doc/open-api
+  swagger-ui:
+    enabled: true
+    path: /doc/ui
+
+logging:
+  level:
+    org.springframework: INFO
+    org.flywaydb: INFO
