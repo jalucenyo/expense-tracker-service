@@ -9,6 +9,10 @@ public record Result<T>(T value, List<Error> errors) {
     return new Result<>(value, null);
   }
 
+  public static <T> Result<T> failure(Error errors) {
+    return new Result<>(null, List.of(errors));
+  }
+
   public static <T> Result<T> failure(List<Error> errors) {
     return new Result<>(null, errors);
   }

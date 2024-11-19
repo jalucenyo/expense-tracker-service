@@ -10,6 +10,10 @@ public record Error(
     PARAMS_INVALID
   }
 
+  public static Error of(String message) {
+    return new Error(null, message, ErrorType.PARAMS_INVALID);
+  }
+
   public static Error ofPramInvalid(String field, String message) {
     return new Error(field, message, ErrorType.PARAMS_INVALID);
   }
