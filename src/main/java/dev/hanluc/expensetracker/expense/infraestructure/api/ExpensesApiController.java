@@ -23,16 +23,16 @@ public class ExpensesApiController implements ExpensesApi {
 
   private final CreateExpenseUseCase createExpenseUseCase;
   private final ExpenseCreateDtoMapper expenseCreateDtoMapper;
-
   private final QueryExpenseUseCase queryExpenseUseCase;
   private final ExpensePaginatedDtoMapper expensePaginatedDtoMapper;
-
   private final DeleteExpenseUseCase deleteExpenseUseCase;
 
   public ExpensesApiController(
     CreateExpenseUseCase createExpenseUseCase,
     ExpenseCreateDtoMapper expenseCreateDtoMapper,
-    QueryExpenseUseCase queryExpenseUseCase, ExpensePaginatedDtoMapper expensePaginatedDtoMapper, DeleteExpenseUseCase deleteExpenseUseCase) {
+    QueryExpenseUseCase queryExpenseUseCase,
+    ExpensePaginatedDtoMapper expensePaginatedDtoMapper,
+    DeleteExpenseUseCase deleteExpenseUseCase) {
     this.createExpenseUseCase = createExpenseUseCase;
     this.expenseCreateDtoMapper = expenseCreateDtoMapper;
     this.queryExpenseUseCase = queryExpenseUseCase;
