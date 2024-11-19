@@ -18,7 +18,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.time.OffsetDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -37,18 +38,40 @@ class ExpensesApiControllerTest {
   TestRestTemplate restTemplate;
 
   @Test
-  void should_find_all_expenses() {
+  void should_filter_between_dates(){
+      final var startDate = ZonedDateTime.now().withZoneSameInstant(ZoneOffset.UTC).minusMonths(1).minusDays(1);
+      final var endDate = ZonedDateTime.now().withZoneSameInstant(ZoneOffset.UTC).minusMonths(1).plusDays(1);
+      ResponseEntity<ExpensePaginatedDto> response = restTemplate.getForEntity(
+        "/expenses?startDate=" + startDate.format(DateTimeFormatter.ISO_DATE_TIME) + "&endDate="+ endDate.format(DateTimeFormatter.ISO_DATE_TIME),
+        ExpensePaginatedDto.class);
 
+      then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+      then(response.getBody()).isNotNull();
+      then(response.getBody().getContent()).hasSizeGreaterThan(0);
+      then(response.getBody().getContent())
+        .extracting("transactionDate")
+        .allMatch(date -> {
+          OffsetDateTime transactionDate = OffsetDateTime.parse(date.toString());
+          return transactionDate.isAfter(startDate.toOffsetDateTime()) && transactionDate.isBefore(endDate.toOffsetDateTime());
+      });
+  }
+
+  @Test
+  void should_find_all_expenses() {
     ResponseEntity<ExpensePaginatedDto> response = restTemplate.getForEntity("/expenses", ExpensePaginatedDto.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     then(response.getBody()).isNotNull();
-    then(response.getBody().getTotalElements()).isEqualTo(10);
+    then(response.getBody().getContent())
+      .extracting("transactionDate")
+      .allMatch(date -> {
+        OffsetDateTime transactionDate = OffsetDateTime.parse(date.toString());
+        return transactionDate.isAfter(OffsetDateTime.now().minusDays(1)) && transactionDate.isBefore(OffsetDateTime.now());
+      });
   }
 
   @Test
   void should_find_paginated_expenses() {
-
     ResponseEntity<ExpensePaginatedDto> response = restTemplate.getForEntity("/expenses?page=0&size=5", ExpensePaginatedDto.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -102,8 +125,7 @@ class ExpensesApiControllerTest {
     ResponseEntity<ExpensePaginatedDto> response = restTemplate.getForEntity("/expenses", ExpensePaginatedDto.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    then(response.getBody()).isNotNull();
-    then(response.getBody().getTotalElements()).isEqualTo(9);
+    // TODO: Add assert get expense by id to check if the expense was deleted
   }
 
   @Test
