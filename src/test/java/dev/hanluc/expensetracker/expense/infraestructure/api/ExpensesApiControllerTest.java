@@ -1,6 +1,7 @@
 package dev.hanluc.expensetracker.expense.infraestructure.api;
 
 import dev.hanluc.expensetracker.expense.infraestructure.api.spec.dto.ExpenseCreateDto;
+import dev.hanluc.expensetracker.expense.infraestructure.api.spec.dto.ExpenseDto;
 import dev.hanluc.expensetracker.expense.infraestructure.api.spec.dto.ExpensePaginatedDto;
 import dev.hanluc.expensetracker.expense.infraestructure.api.spec.dto.MoneyDto;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,17 @@ class ExpensesApiControllerTest {
 
   @Autowired
   TestRestTemplate restTemplate;
+
+  @Test
+  void should_find_expense_by_id() {
+    final var expenseId = "0989de36-843b-4be8-882a-4ec9b219b1f3";
+
+    ResponseEntity<ExpenseDto> response = restTemplate.getForEntity("/expenses/" + expenseId, ExpenseDto.class);
+
+    then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    then(response.getBody()).isNotNull();
+    then(response.getBody().getId()).isEqualTo(expenseId);
+  }
 
   @Test
   void should_filter_between_dates(){
