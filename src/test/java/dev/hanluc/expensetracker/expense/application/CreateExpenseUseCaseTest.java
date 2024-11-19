@@ -18,7 +18,7 @@ import java.util.Set;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.mock;
 
-public class CreateExpenseUseCasaeTest {
+class CreateExpenseUseCaseTest {
 
   private final ExpenseRepository expenseRepository = mock(ExpenseRepository.class);
   private final CreateExpenseUseCase createExpenseUseCase = new CreateExpenseUseCaseImpl(null);
