@@ -5,6 +5,9 @@ import dev.hanluc.expensetracker.expense.domain.repository.ExpenseRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
+import java.util.Optional;
+
 @Service
 public class QueryExpenseUseCaseImpl implements QueryExpenseUseCase {
 
@@ -16,7 +19,11 @@ public class QueryExpenseUseCaseImpl implements QueryExpenseUseCase {
 
   @Override
   public Page<Expense> query(ExpenseQuery query) {
-    return expenseRepository.findAll(query.pageable());
+    final var startDate = Optional.ofNullable(query.startDate()).orElse(OffsetDateTime.now().minusDays(1));
+    final var endDate = Optional.ofNullable(query.endDate()).orElse(OffsetDateTime.now());
+
+    return expenseRepository
+      .findAllByTransactionDateBetweenOrderByTransactionDateDesc(startDate, endDate, query.pageable());
   }
 
 }
