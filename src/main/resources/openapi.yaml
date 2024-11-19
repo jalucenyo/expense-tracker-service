@@ -123,6 +123,32 @@ paths:
           description: Unauthorized
 
   /expenses/{expenseId}:
+
+    get:
+      operationId: getExpense
+      summary: Get an expense by id
+      tags:
+          - expenses
+      security:
+          - BearerAuth: [ ]
+      parameters:
+        - in: path
+          name: expenseId
+          required: true
+          schema:
+              type: string
+      responses:
+        '200':
+          description: Expense retrieved successfully
+          content:
+              application/json:
+                schema:
+                    $ref: '#/components/schemas/Expense'
+        '404':
+          description: Expense not found
+        '401':
+          description: Unauthorized
+
     put:
       operationId: updateExpense
       summary: Update an existing expense
@@ -234,6 +260,8 @@ components:
     Expense:
       type: object
       properties:
+        ddd:
+          type: string
         id:
           type: string
         description:
