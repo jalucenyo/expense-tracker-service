@@ -2,9 +2,11 @@ package dev.hanluc.expensetracker.expense.infraestructure.api;
 
 import dev.hanluc.expensetracker.expense.application.CreateExpenseUseCase;
 import dev.hanluc.expensetracker.expense.application.DeleteExpenseUseCase;
+import dev.hanluc.expensetracker.expense.application.FindByIdExpenseUseCase;
 import dev.hanluc.expensetracker.expense.application.QueryExpenseUseCase;
 import dev.hanluc.expensetracker.expense.domain.exception.ExpenseTrackerException;
 import dev.hanluc.expensetracker.expense.infraestructure.api.mappers.ExpenseCreateDtoMapper;
+import dev.hanluc.expensetracker.expense.infraestructure.api.mappers.ExpenseDtoMapper;
 import dev.hanluc.expensetracker.expense.infraestructure.api.mappers.ExpensePaginatedDtoMapper;
 import dev.hanluc.expensetracker.expense.infraestructure.api.spec.controller.ExpensesApi;
 import dev.hanluc.expensetracker.expense.infraestructure.api.spec.dto.ExpenseCreateDto;
@@ -23,6 +25,8 @@ public class ExpensesApiController implements ExpensesApi {
 
   private final CreateExpenseUseCase createExpenseUseCase;
   private final ExpenseCreateDtoMapper expenseCreateDtoMapper;
+  private final FindByIdExpenseUseCase findByIdExpenseUseCase;
+  private final ExpenseDtoMapper expenseDtoMapper;
   private final QueryExpenseUseCase queryExpenseUseCase;
   private final ExpensePaginatedDtoMapper expensePaginatedDtoMapper;
   private final DeleteExpenseUseCase deleteExpenseUseCase;
@@ -30,11 +34,15 @@ public class ExpensesApiController implements ExpensesApi {
   public ExpensesApiController(
     CreateExpenseUseCase createExpenseUseCase,
     ExpenseCreateDtoMapper expenseCreateDtoMapper,
+    FindByIdExpenseUseCase findByIdExpenseUseCase,
+    ExpenseDtoMapper expenseDtoMapper,
     QueryExpenseUseCase queryExpenseUseCase,
     ExpensePaginatedDtoMapper expensePaginatedDtoMapper,
     DeleteExpenseUseCase deleteExpenseUseCase) {
     this.createExpenseUseCase = createExpenseUseCase;
     this.expenseCreateDtoMapper = expenseCreateDtoMapper;
+    this.findByIdExpenseUseCase = findByIdExpenseUseCase;
+    this.expenseDtoMapper = expenseDtoMapper;
     this.queryExpenseUseCase = queryExpenseUseCase;
     this.expensePaginatedDtoMapper = expensePaginatedDtoMapper;
     this.deleteExpenseUseCase = deleteExpenseUseCase;
@@ -68,6 +76,17 @@ public class ExpensesApiController implements ExpensesApi {
           throw new ExpenseTrackerException(errors);
         },
         expenseCreated -> ResponseEntity.noContent().build()
+      );
+  }
+
+  @Override
+  public ResponseEntity<ExpenseDto> getExpense(String expenseId) {
+    return findByIdExpenseUseCase.findById(expenseId)
+      .fold(
+        errors -> {
+          throw new ExpenseTrackerException(errors);
+        },
+        expense -> ResponseEntity.ok().body(expenseDtoMapper.toExpenseDto(expense))
       );
   }
 
