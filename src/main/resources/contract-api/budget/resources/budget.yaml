@@ -1,0 +1,22 @@
+get:
+  operationId: getBudget
+  summary: Get a budget by id
+  tags:
+    - budgets
+  parameters:
+    - in: path
+      name: budgetId
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Budget retrieved successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/budget.yaml#/components/schemas/Budget'
+    '404':
+      description: Budget not found
+    '401':
+      description: Unauthorized
