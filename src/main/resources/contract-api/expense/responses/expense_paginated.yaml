@@ -1,0 +1,15 @@
+components:
+  schemas:
+    ExpensePaginated:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '../schemas/expense.yaml#/components/schemas/Expense'
+        size:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32

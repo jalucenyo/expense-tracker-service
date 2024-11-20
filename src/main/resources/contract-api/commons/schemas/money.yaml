@@ -1,0 +1,11 @@
+components:
+  schemas:
+    Money:
+      type: object
+      properties:
+        value:
+          type: integer
+          format: int64
+        exponent:
+          type: integer
+          format: int32
