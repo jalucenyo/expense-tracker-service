@@ -1,9 +1,9 @@
 package dev.hanluc.expensetracker.expense.infraestructure.api;
 
-import dev.hanluc.expensetracker.expense.infraestructure.api.spec.dto.ExpenseCreateDto;
-import dev.hanluc.expensetracker.expense.infraestructure.api.spec.dto.ExpenseDto;
-import dev.hanluc.expensetracker.expense.infraestructure.api.spec.dto.ExpensePaginatedDto;
-import dev.hanluc.expensetracker.expense.infraestructure.api.spec.dto.MoneyDto;
+import dev.hanluc.expensetracker.api.spec.dto.ExpenseCreateDto;
+import dev.hanluc.expensetracker.api.spec.dto.ExpenseDto;
+import dev.hanluc.expensetracker.api.spec.dto.ExpensePaginatedDto;
+import dev.hanluc.expensetracker.api.spec.dto.MoneyDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
