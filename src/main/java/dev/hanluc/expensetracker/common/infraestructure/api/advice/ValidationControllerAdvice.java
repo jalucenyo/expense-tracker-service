@@ -1,4 +1,4 @@
-package dev.hanluc.expensetracker.expense.infraestructure.api.advice;
+package dev.hanluc.expensetracker.common.infraestructure.api.advice;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
