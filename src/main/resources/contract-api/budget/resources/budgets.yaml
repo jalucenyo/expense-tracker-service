@@ -27,7 +27,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../parameters/budget_create.yaml#/components/BudgetCreate'
+          $ref: '../parameters/budget_create.yaml#/components/schemas/BudgetCreate'
   responses:
     '201':
       description: Budget created successfully

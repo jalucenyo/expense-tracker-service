@@ -1,14 +1,15 @@
 components:
-  BudgetCreate:
-    type: object
-    properties:
-      name:
-        type: string
-      amount:
-        $ref: '../../commons/schemas/money.yaml#/components/schemas/Money'
-      startDate:
-        type: string
-        format: date
-      endDate:
-        type: string
-        format: date
+  schemas:
+    BudgetCreate:
+      type: object
+      properties:
+        name:
+          type: string
+        amount:
+          $ref: '../../commons/schemas/money.yaml#/components/schemas/Money'
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
