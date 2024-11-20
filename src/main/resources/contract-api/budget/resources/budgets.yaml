@@ -1,0 +1,39 @@
+get:
+  operationId: getBudgets
+  summary: Get all budgets
+  x-spring-paginated: true
+  tags:
+    - budgets
+  responses:
+    '200':
+      description: Budgets retrieved successfully
+      content:
+        application/json:
+          schema:
+            items:
+              $ref: '../responses/budget_paginated.yaml#/components/schemas/BudgetPaginated'
+    '401':
+      description: Unauthorized
+
+post:
+  operationId: createBudget
+  summary: Create a new budget
+  tags:
+    - budgets
+  security:
+    - BearerAuth: [ ]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../parameters/budget_create.yaml#/components/BudgetCreate'
+  responses:
+    '201':
+      description: Budget created successfully
+      headers:
+        Location:
+          description: URI of the newly created budget
+          schema:
+            type: string
+            format: uri
