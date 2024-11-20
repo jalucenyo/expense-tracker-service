@@ -1,0 +1,72 @@
+get:
+  operationId: getExpense
+  summary: Get an expense by id
+  tags:
+    - expenses
+  security:
+    - BearerAuth: [ ]
+  parameters:
+    - in: path
+      name: expenseId
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Expense retrieved successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/expense.yaml#/components/schemas/Expense'
+    '404':
+      description: Expense not found
+    '401':
+      description: Unauthorized
+
+delete:
+  operationId: deleteExpense
+  summary: Delete an existing expense
+  tags:
+    - expenses
+  security:
+    - BearerAuth: [ ]
+  parameters:
+    - in: path
+      name: expenseId
+      required: true
+      schema:
+        type: string
+  responses:
+    '204':
+      description: Expense deleted successfully
+    '404':
+      description: Expense not found
+    '401':
+      description: Unauthorized
+
+put:
+  operationId: updateExpense
+  summary: Update an existing expense
+  tags:
+    - expenses
+  security:
+    - BearerAuth: [ ]
+  parameters:
+    - in: path
+      name: expenseId
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/expense.yaml#/components/schemas/Expense'
+  responses:
+    '200':
+      description: Expense updated successfully
+    '404':
+      description: Expense not found
+    '401':
+      description: Unauthorized

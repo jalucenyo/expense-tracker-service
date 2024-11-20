@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class DomainControllerAdvice {
+public class ExpenseTrackerExceptionAdvice {
 
   @ExceptionHandler(ExpenseTrackerException.class)
   @ResponseStatus(HttpStatus.CONFLICT)

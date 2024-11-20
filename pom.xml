@@ -21,8 +21,8 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <openapi-generator.version>6.6.0</openapi-generator.version>
-        <openapi.package.api>dev.hanluc.expensetracker.expense.infraestructure.api.spec.controller</openapi.package.api>
-        <openapi.package.model>dev.hanluc.expensetracker.expense.infraestructure.api.spec.dto</openapi.package.model>
+        <openapi.package.api>dev.hanluc.expensetracker.api.spec.controller</openapi.package.api>
+        <openapi.package.model>dev.hanluc.expensetracker.api.spec.dto</openapi.package.model>
         <swagger.annotations.version>2.2.14</swagger.annotations.version>
         <jackson-nullable.version>0.2.6</jackson-nullable.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -208,7 +208,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/contract-api/openapi.yaml</inputSpec>
                             <generateSupportingFiles>true</generateSupportingFiles>
                             <generatorName>spring</generatorName>
                             <strictSpec>true</strictSpec>
@@ -218,19 +218,13 @@
                             <modelPackage>${openapi.package.model}</modelPackage>
                             <modelNameSuffix>Dto</modelNameSuffix>
                             <configOptions>
-                                <controllerThrowsExceptions>java.io.IOException,com.example.NotFoundException
-                                </controllerThrowsExceptions>
                                 <interfaceOnly>true</interfaceOnly>
                                 <skipDefaultInterface>true</skipDefaultInterface>
-                                <useBeanValidation>true</useBeanValidation>
-                                <useClassLevelBeanValidation>false</useClassLevelBeanValidation>
+                                <useBeanValidation>false</useBeanValidation>
                                 <useTags>true</useTags>
                                 <java17>true</java17>
-                                <useOptional>false</useOptional>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
                                 <dateLibrary>java17</dateLibrary>
-                                <bigDecimalAsString>true</bigDecimalAsString>
-                                <useBeanValidation>true</useBeanValidation>
                                 <documentationProvider>source</documentationProvider>
                             </configOptions>
                             <typeMappings>
