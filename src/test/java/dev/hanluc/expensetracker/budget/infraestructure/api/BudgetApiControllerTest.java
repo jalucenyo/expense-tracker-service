@@ -15,6 +15,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+import java.time.OffsetDateTime;
+
 import static org.assertj.core.api.BDDAssertions.then;
 
 @Testcontainers
@@ -52,11 +54,13 @@ class BudgetApiControllerTest {
 
   @Test
   void should_create_budget() {
-    BudgetDto budgetDto = new BudgetDto()
+    BudgetDto createBudget = new BudgetDto()
       .name("Budget 1")
-      .amount(new MoneyDto().value(983L).exponent(2));
+      .amount(new MoneyDto().value(983L).exponent(2))
+      .startDate(OffsetDateTime.now())
+      .endDate(OffsetDateTime.now().plusMonths(1));
 
-    ResponseEntity<Void> response = restTemplate.postForEntity("/budgets", budgetDto, Void.class);
+    ResponseEntity<Void> response = restTemplate.postForEntity("/budgets", createBudget, Void.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     then(response.getHeaders().getLocation()).isNotNull();
