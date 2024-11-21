@@ -1,8 +1,8 @@
 package dev.hanluc.expensetracker.expense.application;
 
+import dev.hanluc.expensetracker.common.domain.vo.Money;
+import dev.hanluc.expensetracker.common.domain.vo.Result;
 import dev.hanluc.expensetracker.expense.domain.Expense;
-import dev.hanluc.expensetracker.expense.domain.vo.Money;
-import dev.hanluc.expensetracker.expense.domain.vo.Result;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

@@ -1,6 +1,6 @@
 package dev.hanluc.expensetracker.expense.domain;
 
-import dev.hanluc.expensetracker.expense.domain.vo.Money;
+import dev.hanluc.expensetracker.common.domain.vo.Money;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,10 +21,8 @@ public class Expense {
   private UUID id;
 
   @Embedded
-  @AttributeOverrides({
-    @AttributeOverride(name = "value", column = @Column(name = "amount_value")),
-    @AttributeOverride(name = "exponent", column = @Column(name = "amount_exponent"))
-  })
+  @AttributeOverride(name = "value", column = @Column(name = "amount_value"))
+  @AttributeOverride(name = "exponent", column = @Column(name = "amount_exponent"))
   private Money amount;
 
   private String description;

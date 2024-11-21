@@ -1,9 +1,9 @@
 package dev.hanluc.expensetracker.expense.application;
 
+import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.expense.application.CreateExpenseUseCase.ExpenseCreate;
 import dev.hanluc.expensetracker.expense.application.asserts.ValidationAssert;
 import dev.hanluc.expensetracker.expense.domain.repository.ExpenseRepository;
-import dev.hanluc.expensetracker.expense.domain.vo.Money;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
