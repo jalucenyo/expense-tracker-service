@@ -1,6 +1,6 @@
 package dev.hanluc.expensetracker.expense.application;
 
-import dev.hanluc.expensetracker.expense.domain.vo.Result;
+import dev.hanluc.expensetracker.common.domain.vo.Result;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.UUID;

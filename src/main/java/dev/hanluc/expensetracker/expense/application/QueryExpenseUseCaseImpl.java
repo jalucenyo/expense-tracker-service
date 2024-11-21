@@ -1,9 +1,9 @@
 package dev.hanluc.expensetracker.expense.application;
 
+import dev.hanluc.expensetracker.common.domain.vo.Result;
+import dev.hanluc.expensetracker.common.domain.vo.ResultError;
 import dev.hanluc.expensetracker.expense.domain.Expense;
 import dev.hanluc.expensetracker.expense.domain.repository.ExpenseRepository;
-import dev.hanluc.expensetracker.expense.domain.vo.Error;
-import dev.hanluc.expensetracker.expense.domain.vo.Result;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,7 @@ public class QueryExpenseUseCaseImpl implements QueryExpenseUseCase, FindByIdExp
   public Result<Expense> findById(String id) {
     return expenseRepository.findById(UUID.fromString(id))
       .map(Result::success)
-      .orElseGet(() -> Result.failure(Error.of("Expense not found")));
+      .orElseGet(() -> Result.failure(ResultError.of("Expense not found")));
   }
 
 }

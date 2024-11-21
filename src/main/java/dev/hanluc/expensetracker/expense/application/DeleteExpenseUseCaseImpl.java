@@ -1,7 +1,7 @@
 package dev.hanluc.expensetracker.expense.application;
 
+import dev.hanluc.expensetracker.common.domain.vo.Result;
 import dev.hanluc.expensetracker.expense.domain.repository.ExpenseRepository;
-import dev.hanluc.expensetracker.expense.domain.vo.Result;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;

@@ -1,6 +1,6 @@
 package dev.hanluc.expensetracker.expense.infraestructure.api.advice;
 
-import dev.hanluc.expensetracker.expense.domain.vo.Error;
+import dev.hanluc.expensetracker.common.domain.vo.ResultError;
 import dev.hanluc.expensetracker.expense.domain.exception.ExpenseTrackerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -18,7 +18,7 @@ public class ExpenseTrackerExceptionAdvice {
   public ProblemDetail handleBadRequestException(ExpenseTrackerException exception) {
     ProblemDetail problemDetails = ProblemDetail.forStatus(HttpStatus.CONFLICT);
     problemDetails.setProperty("errors", exception.getValidationErrors().stream()
-      .collect(Collectors.toMap(Error::field, Error::message)));
+      .collect(Collectors.toMap(ResultError::field, ResultError::message)));
     return problemDetails;
   }
 

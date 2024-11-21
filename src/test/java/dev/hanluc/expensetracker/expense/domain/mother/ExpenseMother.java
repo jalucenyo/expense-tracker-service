@@ -1,8 +1,8 @@
 package dev.hanluc.expensetracker.expense.domain.mother;
 
 
+import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.expense.domain.Expense;
-import dev.hanluc.expensetracker.expense.domain.vo.Money;
 
 import java.time.OffsetDateTime;
 
