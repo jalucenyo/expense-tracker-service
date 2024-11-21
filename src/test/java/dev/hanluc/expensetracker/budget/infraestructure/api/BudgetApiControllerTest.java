@@ -10,6 +10,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -21,6 +22,8 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(scripts = "classpath:db/budget/data-init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:db/budget/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 class BudgetApiControllerTest {
 
   @Container
@@ -33,7 +36,7 @@ class BudgetApiControllerTest {
 
   @Test
   void should_find_budget_by_id() {
-    final var budgetId = "0989de36-843b-4be8-882a-4ec9b219b1f3";
+    final var budgetId = "22a2b9a8-a538-4a2a-ad2d-5e2dfca9a972";
 
     ResponseEntity<BudgetDto> response = restTemplate.getForEntity("/budgets/" + budgetId, BudgetDto.class);
 
