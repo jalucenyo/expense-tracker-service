@@ -10,8 +10,7 @@ get:
       content:
         application/json:
           schema:
-            items:
-              $ref: '../responses/budget_paginated.yaml#/components/schemas/BudgetPaginated'
+            $ref: '../responses/budget_paginated.yaml#/components/schemas/BudgetPaginated'
     '401':
       description: Unauthorized
 
