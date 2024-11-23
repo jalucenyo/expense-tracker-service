@@ -1,4 +1,4 @@
-package dev.hanluc.expensetracker.expense.application;
+package dev.hanluc.expensetracker.expenses.application;
 
 import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.expenses.application.CreateExpenseUseCase.ExpenseCreate;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 class CreateExpenseUseCaseTest {
 
   private final ExpenseRepository expenseRepository = mock(ExpenseRepository.class);
-  private final CreateExpenseUseCase createExpenseUseCase = new CreateExpenseUseCaseImpl(null);
+  private final CreateExpenseUseCase createExpenseUseCase = new CreateExpenseUseCaseImpl(null, null);
   private static Validator validator;
 
   @BeforeAll
