@@ -16,11 +16,6 @@ tags:
 
 paths:
   /expenses:
-    $ref: './expense/resources/expenses.yaml'
+    $ref: './resources/expenses.yaml'
   /expenses/{expenseId}:
-    $ref: './expense/resources/expense.yaml'
-
-  /budgets:
-    $ref: './budget/resources/budgets.yaml'
-  /budgets/{budgetId}:
-    $ref: './budget/resources/budget.yaml'
+    $ref: './resources/expense.yaml'
