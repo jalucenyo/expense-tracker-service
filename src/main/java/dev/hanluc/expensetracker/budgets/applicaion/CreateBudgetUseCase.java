@@ -1,6 +1,7 @@
 package dev.hanluc.expensetracker.budgets.applicaion;
 
 import dev.hanluc.expensetracker.budgets.domain.Budget;
+import dev.hanluc.expensetracker.budgets.domain.BudgetBuilder;
 import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.common.domain.vo.Result;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import jakarta.validation.constraints.Size;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Validated
 public interface CreateBudgetUseCase {
@@ -34,7 +36,13 @@ public interface CreateBudgetUseCase {
 
   ) {
     public Budget toBudget() {
-      return new Budget(name, amount, startDate, endDate);
+      return new BudgetBuilder()
+        .setId(UUID.randomUUID())
+        .setName(name)
+        .setAmount(amount)
+        .setStartDate(startDate)
+        .setEndDate(endDate)
+        .createBudget();
     }
   }
 
