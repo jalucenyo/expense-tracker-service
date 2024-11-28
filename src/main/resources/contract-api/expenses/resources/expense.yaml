@@ -1,5 +1,5 @@
 get:
-  operationId: getExpense
+  operationId: get
   summary: Get an expense by id
   tags:
     - expenses
@@ -24,7 +24,7 @@ get:
       description: Unauthorized
 
 delete:
-  operationId: deleteExpense
+  operationId: delete
   summary: Delete an existing expense
   tags:
     - expenses
@@ -45,8 +45,9 @@ delete:
       description: Unauthorized
 
 put:
-  operationId: updateExpense
+  operationId: put
   summary: Update an existing expense
+  description: BLA BLA BLA2
   tags:
     - expenses
   security:

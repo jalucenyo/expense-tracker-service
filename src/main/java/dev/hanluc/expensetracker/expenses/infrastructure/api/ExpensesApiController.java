@@ -24,34 +24,37 @@ import java.time.OffsetDateTime;
 public class ExpensesApiController implements ExpensesApi {
 
   private final CreateExpenseUseCase createExpenseUseCase;
-  private final ExpenseCreateDtoMapper expenseCreateDtoMapper;
+  private final ExpenseCreateDtoMapper createRequestMapper;
+
   private final FindByIdExpenseUseCase findByIdExpenseUseCase;
-  private final ExpenseDtoMapper expenseDtoMapper;
+  private final ExpenseDtoMapper expenseResponseMapper;
+
   private final QueryExpenseUseCase queryExpenseUseCase;
-  private final ExpensePaginatedDtoMapper expensePaginatedDtoMapper;
+  private final ExpensePaginatedDtoMapper queryResponseMapper;
+
   private final DeleteExpenseUseCase deleteExpenseUseCase;
+
 
   public ExpensesApiController(
     CreateExpenseUseCase createExpenseUseCase,
-    ExpenseCreateDtoMapper expenseCreateDtoMapper,
+    ExpenseCreateDtoMapper createRequestMapper,
     FindByIdExpenseUseCase findByIdExpenseUseCase,
-    ExpenseDtoMapper expenseDtoMapper,
+    ExpenseDtoMapper expenseResponseMapper,
     QueryExpenseUseCase queryExpenseUseCase,
-    ExpensePaginatedDtoMapper expensePaginatedDtoMapper,
+    ExpensePaginatedDtoMapper queryResponseMapper,
     DeleteExpenseUseCase deleteExpenseUseCase) {
     this.createExpenseUseCase = createExpenseUseCase;
-    this.expenseCreateDtoMapper = expenseCreateDtoMapper;
+    this.createRequestMapper = createRequestMapper;
     this.findByIdExpenseUseCase = findByIdExpenseUseCase;
-    this.expenseDtoMapper = expenseDtoMapper;
+    this.expenseResponseMapper = expenseResponseMapper;
     this.queryExpenseUseCase = queryExpenseUseCase;
-    this.expensePaginatedDtoMapper = expensePaginatedDtoMapper;
+    this.queryResponseMapper = queryResponseMapper;
     this.deleteExpenseUseCase = deleteExpenseUseCase;
   }
 
   @Override
-  public ResponseEntity<Void> createExpense(ExpenseCreateDto expenseCreateDto) {
-
-    final var expenseCreate = expenseCreateDtoMapper.toExpenseCreate(expenseCreateDto);
+  public ResponseEntity<Void> post(ExpenseCreateDto expenseCreateDto) {
+    final var expenseCreate = createRequestMapper.toExpenseCreate(expenseCreateDto);
 
     return createExpenseUseCase.create(expenseCreate)
       .fold(
@@ -69,7 +72,7 @@ public class ExpensesApiController implements ExpensesApi {
   }
 
   @Override
-  public ResponseEntity<Void> deleteExpense(String expenseId) {
+  public ResponseEntity<Void> delete(String expenseId) {
     return deleteExpenseUseCase.delete(new DeleteExpenseUseCase.ExpenseDelete(expenseId))
       .fold(
         errors -> {
@@ -80,24 +83,25 @@ public class ExpensesApiController implements ExpensesApi {
   }
 
   @Override
-  public ResponseEntity<ExpenseDto> getExpense(String expenseId) {
+  public ResponseEntity<ExpenseDto> get(String expenseId) {
     return findByIdExpenseUseCase.findById(expenseId)
       .fold(
         errors -> {
           throw new ExpenseTrackerException(errors);
         },
-        expense -> ResponseEntity.ok().body(expenseDtoMapper.toExpenseDto(expense))
+        expense -> ResponseEntity.ok().body(expenseResponseMapper.toExpenseDto(expense))
       );
   }
 
   @Override
-  public ResponseEntity<ExpensePaginatedDto> listExpenses(String filter, OffsetDateTime startDate, OffsetDateTime endDate, Pageable pageable) {
-    return ResponseEntity.ok().body(expensePaginatedDtoMapper.toExpensePaginatedDto(
+  public ResponseEntity<ExpensePaginatedDto> query(String filter, OffsetDateTime startDate, OffsetDateTime endDate, Pageable pageable) {
+    return ResponseEntity.ok().body(queryResponseMapper.toExpensePaginatedDto(
       queryExpenseUseCase.query(new QueryExpenseUseCase.ExpenseQuery(filter, startDate, endDate, pageable))));
   }
 
+
   @Override
-  public ResponseEntity<Void> updateExpense(String expenseId, ExpenseDto expenseDto) {
+  public ResponseEntity<Void> put(String expenseId, ExpenseDto expenseDto) {
     return null;
   }
 

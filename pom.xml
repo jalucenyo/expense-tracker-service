@@ -235,6 +235,7 @@
                             <inputSpec>${project.basedir}/src/main/resources/contract-api/expenses/openapi.yaml</inputSpec>
                             <generateSupportingFiles>true</generateSupportingFiles>
                             <generatorName>spring</generatorName>
+                            <library>spring-boot</library>
                             <strictSpec>true</strictSpec>
                             <generateApiTests>false</generateApiTests>
                             <generateModelTests>false</generateModelTests>
@@ -249,7 +250,9 @@
                                 <java17>true</java17>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
                                 <dateLibrary>java17</dateLibrary>
-                                <documentationProvider>source</documentationProvider>
+                                <documentationProvider>springdoc</documentationProvider>
+                                <useOptional>false</useOptional>
+                                <useSpringBoot3>true</useSpringBoot3>
                             </configOptions>
                             <typeMappings>
                                 <typeMapping>DateTime=OffsetDateTime</typeMapping>
