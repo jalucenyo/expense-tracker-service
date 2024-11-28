@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class CreateExpenseUseCaseImpl implements CreateExpenseUseCase {
+public class CreateExpenseUseCaseService implements CreateExpenseUseCase {
 
   private final ExpenseRepository expenseRepository;
   private final ApplicationEventPublisher eventPublisher;
 
-  public CreateExpenseUseCaseImpl(ExpenseRepository expenseRepository, ApplicationEventPublisher eventPublisher) {
+  public CreateExpenseUseCaseService(ExpenseRepository expenseRepository, ApplicationEventPublisher eventPublisher) {
     this.expenseRepository = expenseRepository;
     this.eventPublisher = eventPublisher;
   }

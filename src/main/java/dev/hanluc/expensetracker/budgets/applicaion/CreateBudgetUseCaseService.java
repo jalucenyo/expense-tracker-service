@@ -6,11 +6,11 @@ import dev.hanluc.expensetracker.common.domain.vo.Result;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CreateBudgetUseCaseImpl implements CreateBudgetUseCase {
+public class CreateBudgetUseCaseService implements CreateBudgetUseCase {
 
   private final BudgetRepository budgetRepository;
 
-  public CreateBudgetUseCaseImpl(BudgetRepository budgetRepository) {
+  public CreateBudgetUseCaseService(BudgetRepository budgetRepository) {
     this.budgetRepository = budgetRepository;
   }
 

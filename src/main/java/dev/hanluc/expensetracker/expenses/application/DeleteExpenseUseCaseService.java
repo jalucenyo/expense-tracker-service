@@ -8,11 +8,11 @@ import java.util.UUID;
 
 @Service
 
-public class DeleteExpenseUseCaseImpl implements DeleteExpenseUseCase {
+public class DeleteExpenseUseCaseService implements DeleteExpenseUseCase {
 
   private final ExpenseRepository expenseRepository;
 
-  public DeleteExpenseUseCaseImpl(ExpenseRepository expenseRepository) {
+  public DeleteExpenseUseCaseService(ExpenseRepository expenseRepository) {
     this.expenseRepository = expenseRepository;
   }
 
