@@ -1,36 +1,33 @@
 package dev.hanluc.expensetracker.budgets.domain;
 
 import dev.hanluc.expensetracker.common.domain.vo.Money;
-import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Embedded;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-@Entity(name = "budget")
+@Table
 public class Budget {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @EqualsAndHashCode.Include
   private UUID id;
 
+  @Version
   private String name;
 
-  @Embedded
-  @AttributeOverride(name = "value", column = @Column(name = "amount_value"))
-  @AttributeOverride(name = "exponent", column = @Column(name = "amount_exponent"))
+  @Embedded(onEmpty = Embedded.OnEmpty.USE_EMPTY, prefix = "amount_")
   private Money amount;
 
   private OffsetDateTime startDate;
 
   private OffsetDateTime endDate;
 
-  public Budget() {
-  }
-
-  public Budget(String name, Money amount, OffsetDateTime startDate, OffsetDateTime endDate) {
+  public Budget(UUID id, String name, Money amount, OffsetDateTime startDate, OffsetDateTime endDate) {
+    this.id = id;
     this.name = name;
     this.amount = amount;
     this.startDate = startDate;
