@@ -17,6 +17,8 @@ public class Budget {
   private UUID id;
 
   @Version
+  private Integer version;
+
   private String name;
 
   @Embedded(onEmpty = Embedded.OnEmpty.USE_EMPTY, prefix = "amount_")
