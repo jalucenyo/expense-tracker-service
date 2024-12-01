@@ -1,5 +1,5 @@
 get:
-  operationId: listExpenses
+  operationId: query
   summary: List and filter expenses
   x-spring-paginated: true
   tags:
@@ -38,7 +38,7 @@ get:
       description: Unauthorized
 
 post:
-  operationId: createExpense
+  operationId: post
   summary: Create a new expense
   tags:
     - expenses

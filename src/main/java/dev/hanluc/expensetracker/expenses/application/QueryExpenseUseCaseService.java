@@ -12,11 +12,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class QueryExpenseUseCaseImpl implements QueryExpenseUseCase, FindByIdExpenseUseCase {
+public class QueryExpenseUseCaseService implements QueryExpenseUseCase, FindByIdExpenseUseCase {
 
   private final ExpenseRepository expenseRepository;
 
-  public QueryExpenseUseCaseImpl(ExpenseRepository expenseRepository) {
+  public QueryExpenseUseCaseService(ExpenseRepository expenseRepository) {
     this.expenseRepository = expenseRepository;
   }
 

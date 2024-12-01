@@ -3,8 +3,6 @@ components:
     Expense:
       type: object
       properties:
-        ddd:
-          type: string
         id:
           type: string
         description:

@@ -11,8 +11,6 @@ servers:
 tags:
   - name: expenses
     description: Expense operations
-  - name: budgets
-    description: Budget operations
 
 paths:
   /expenses:

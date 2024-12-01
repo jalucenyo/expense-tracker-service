@@ -3,6 +3,7 @@ package dev.hanluc.expensetracker.expenses.application;
 import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.common.domain.vo.Result;
 import dev.hanluc.expensetracker.expenses.domain.Expense;
+import dev.hanluc.expensetracker.expenses.domain.ExpenseBuilder;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import jakarta.validation.constraints.Size;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Validated
 public interface CreateExpenseUseCase {
@@ -45,15 +47,16 @@ public interface CreateExpenseUseCase {
   ) {
 
     public Expense toExpense() {
-      return Expense.builder()
-        .amount(amount)
-        .description(description)
-        .notes(notes)
-        .paymentMethod(paymentMethod)
-        .recurrence(recurrence)
-        .transactionDate(transactionDate)
-        .vendor(vendor)
-        .build();
+      return new ExpenseBuilder()
+        .setId(UUID.randomUUID())
+        .setAmount(amount)
+        .setDescription(description)
+        .setNotes(notes)
+        .setPaymentMethod(paymentMethod)
+        .setRecurrence(recurrence)
+        .setTransactionDate(transactionDate)
+        .setVendor(vendor)
+        .createExpense();
     }
   }
 }

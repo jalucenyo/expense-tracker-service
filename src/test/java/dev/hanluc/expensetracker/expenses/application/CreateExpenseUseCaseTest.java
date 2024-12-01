@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 class CreateExpenseUseCaseTest {
 
   private final ExpenseRepository expenseRepository = mock(ExpenseRepository.class);
-  private final CreateExpenseUseCase createExpenseUseCase = new CreateExpenseUseCaseImpl(null, null);
+  private final CreateExpenseUseCase createExpenseUseCase = new CreateExpenseUseCaseService(null, null);
   private static Validator validator;
 
   @BeforeAll
