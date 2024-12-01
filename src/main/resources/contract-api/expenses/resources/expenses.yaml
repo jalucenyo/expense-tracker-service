@@ -1,0 +1,65 @@
+get:
+  operationId: query
+  summary: List and filter expenses
+  x-spring-paginated: true
+  tags:
+    - expenses
+  security:
+    - BearerAuth: [ ]
+  parameters:
+    - in: query
+      name: filter
+      schema:
+        type: string
+        enum: [ last_week, last_month, last_3_months, custom ]
+      description: Filter to list expenses
+    - in: query
+      name: startDate
+      schema:
+        type: string
+        format: date
+      description: Start date for custom filter
+    - in: query
+      name: endDate
+      schema:
+        type: string
+        format: date
+      description: End date for custom filter
+  responses:
+    '200':
+      description: Filtered list of expenses
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/expense_paginated.yaml#/components/schemas/ExpensePaginated'
+    '400':
+      description: Invalid data
+    '401':
+      description: Unauthorized
+
+post:
+  operationId: post
+  summary: Create a new expense
+  tags:
+    - expenses
+  security:
+    - BearerAuth: [ ]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../parameters/expense_create.yaml#/components/schemas/ExpenseCreate'
+  responses:
+    '201':
+      description: Expense created successfully
+      headers:
+        Location:
+          description: URI of the newly created expense
+          schema:
+            type: string
+            format: uri
+    '400':
+      description: Invalid data
+    '401':
+      description: Unauthorized

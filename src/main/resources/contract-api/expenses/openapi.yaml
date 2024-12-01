@@ -1,0 +1,19 @@
+openapi: 3.0.0
+info:
+  title: Expense Tracker API
+  description: API for managing and tracking personal expenses.
+  version: 1.0.0
+
+servers:
+  - url: /api/v1
+    description: Development server
+
+tags:
+  - name: expenses
+    description: Expense operations
+
+paths:
+  /expenses:
+    $ref: './resources/expenses.yaml'
+  /expenses/{expenseId}:
+    $ref: './resources/expense.yaml'

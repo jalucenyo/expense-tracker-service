@@ -11,15 +11,15 @@ spring:
     username: expenses_usr111
     password: expenses_password
     driver-class-name: org.postgresql.Driver
-  jpa:
-    show-sql: true
-    properties:
-      hibernate.hibernate.format_sql: true
-    hibernate:
-      ddl-auto: none
-
-  flyway:
+  liquibase:
     enabled: true
+
+  modulith:
+    events:
+      jdbc:
+        schema-initialization:
+          enabled: true
+    republish-outstanding-events-on-restart: true
 
 springdoc:
   api-docs:
@@ -31,5 +31,5 @@ springdoc:
 
 logging:
   level:
+    org.springframework.jdbc: DEBUG
     org.springframework: INFO
-    org.flywaydb: INFO

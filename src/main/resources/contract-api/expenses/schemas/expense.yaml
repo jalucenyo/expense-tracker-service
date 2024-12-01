@@ -1,0 +1,24 @@
+components:
+  schemas:
+    Expense:
+      type: object
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        transactionDate:
+          type: string
+          format: date
+        amount:
+          $ref: '../../commons/schemas/money.yaml#/components/schemas/Money'
+        paymentMethod:
+          type: string
+          enum: [ CASH, CREDIT_CARD, DEBIT_CARD, CHECK, TRANSFER ]
+        vendor:
+          type: string
+        recurrence:
+          type: string
+          enum: [ NONE, DAILY, WEEKLY, BIWEEKLY, MONTHLY, YEARLY ]
+        notes:
+          type: string
