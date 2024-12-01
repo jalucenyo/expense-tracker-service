@@ -84,12 +84,12 @@ class ExpensesApiControllerTest {
 
   @Test
   void should_find_paginated_expenses() {
-    ResponseEntity<ExpensePaginatedDto> response = restTemplate.getForEntity("/expenses?page=0&size=5", ExpensePaginatedDto.class);
+    ResponseEntity<ExpensePaginatedDto> response = restTemplate.getForEntity("/expenses?page=0&size=2", ExpensePaginatedDto.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     then(response.getBody()).isNotNull();
-    then(response.getBody().getTotalElements()).isEqualTo(10);
-    then(response.getBody().getContent()).hasSize(5);
+    then(response.getBody().getTotalElements()).isEqualTo(5);
+    then(response.getBody().getContent()).hasSize(2);
   }
 
   @Test
