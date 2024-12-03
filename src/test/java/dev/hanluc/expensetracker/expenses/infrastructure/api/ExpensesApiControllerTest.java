@@ -1,9 +1,9 @@
 package dev.hanluc.expensetracker.expenses.infrastructure.api;
 
-import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseCreateDto;
-import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseDto;
-import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpensePaginatedDto;
-import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.MoneyDto;
+import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseCreateRequest;
+import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpensePaginatedResponse;
+import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseResponse;
+import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,7 +42,7 @@ class ExpensesApiControllerTest {
   void should_find_expense_by_id() {
     final var expenseId = "0989de36-843b-4be8-882a-4ec9b219b1f3";
 
-    ResponseEntity<ExpenseDto> response = restTemplate.getForEntity("/expenses/" + expenseId, ExpenseDto.class);
+    ResponseEntity<ExpenseResponse> response = restTemplate.getForEntity("/expenses/" + expenseId, ExpenseResponse.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     then(response.getBody()).isNotNull();
@@ -53,9 +53,9 @@ class ExpensesApiControllerTest {
   void should_filter_between_dates(){
       final var startDate = ZonedDateTime.now().withZoneSameInstant(ZoneOffset.UTC).minusMonths(1).minusDays(1);
       final var endDate = ZonedDateTime.now().withZoneSameInstant(ZoneOffset.UTC).minusMonths(1).plusDays(1);
-      ResponseEntity<ExpensePaginatedDto> response = restTemplate.getForEntity(
+      ResponseEntity<ExpensePaginatedResponse> response = restTemplate.getForEntity(
         "/expenses?startDate=" + startDate.format(DateTimeFormatter.ISO_DATE_TIME) + "&endDate="+ endDate.format(DateTimeFormatter.ISO_DATE_TIME),
-        ExpensePaginatedDto.class);
+        ExpensePaginatedResponse.class);
 
       then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
       then(response.getBody()).isNotNull();
@@ -70,7 +70,7 @@ class ExpensesApiControllerTest {
 
   @Test
   void should_find_all_expenses() {
-    ResponseEntity<ExpensePaginatedDto> response = restTemplate.getForEntity("/expenses", ExpensePaginatedDto.class);
+    ResponseEntity<ExpensePaginatedResponse> response = restTemplate.getForEntity("/expenses", ExpensePaginatedResponse.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     then(response.getBody()).isNotNull();
@@ -84,7 +84,7 @@ class ExpensesApiControllerTest {
 
   @Test
   void should_find_paginated_expenses() {
-    ResponseEntity<ExpensePaginatedDto> response = restTemplate.getForEntity("/expenses?page=0&size=2", ExpensePaginatedDto.class);
+    ResponseEntity<ExpensePaginatedResponse> response = restTemplate.getForEntity("/expenses?page=0&size=2", ExpensePaginatedResponse.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     then(response.getBody()).isNotNull();
@@ -97,13 +97,13 @@ class ExpensesApiControllerTest {
   @Sql(scripts = "classpath:db/data-init.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
   void should_create_expense() {
     ResponseEntity<Void> response = restTemplate.postForEntity("/expenses",
-      new ExpenseCreateDto()
+      new ExpenseCreateRequest()
         .description("Test 1")
         .vendor("Vendor 1")
         .transactionDate(OffsetDateTime.now())
-        .recurrence(ExpenseCreateDto.RecurrenceEnum.NONE)
-        .amount(new MoneyDto().value(983L).exponent(2))
-        .paymentMethod(ExpenseCreateDto.PaymentMethodEnum.CASH)
+        .recurrence(ExpenseCreateRequest.RecurrenceEnum.NONE)
+        .amount(new Money().value(983L).exponent(2))
+        .paymentMethod(ExpenseCreateRequest.PaymentMethodEnum.CASH)
       , Void.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -115,13 +115,13 @@ class ExpensesApiControllerTest {
   @Test
   void should_return_error_when_description_is_empty() {
     ResponseEntity<ProblemDetail> response = restTemplate.postForEntity("/expenses",
-      new ExpenseCreateDto()
+      new ExpenseCreateRequest()
         .description("")
         .vendor("")
         .transactionDate(OffsetDateTime.now())
-        .recurrence(ExpenseCreateDto.RecurrenceEnum.NONE)
-        .amount(new MoneyDto().value(983L).exponent(2))
-        .paymentMethod(ExpenseCreateDto.PaymentMethodEnum.CASH)
+        .recurrence(ExpenseCreateRequest.RecurrenceEnum.NONE)
+        .amount(new Money().value(983L).exponent(2))
+        .paymentMethod(ExpenseCreateRequest.PaymentMethodEnum.CASH)
       , ProblemDetail.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
@@ -134,7 +134,7 @@ class ExpensesApiControllerTest {
 
     restTemplate.delete("/expenses/" + "8b540e0f-0a73-4459-8b91-8f3b9d71ec30");
 
-    ResponseEntity<ExpensePaginatedDto> response = restTemplate.getForEntity("/expenses", ExpensePaginatedDto.class);
+    ResponseEntity<ExpensePaginatedResponse> response = restTemplate.getForEntity("/expenses", ExpensePaginatedResponse.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     // TODO: Add assert get expense by id to check if the expense was deleted
