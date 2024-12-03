@@ -291,13 +291,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub</name>
-            <url>https://maven.pkg.github.com/jalucenyo/expense-tracker-service</url>
-        </repository>
-    </distributionManagement>
-
 </project>
