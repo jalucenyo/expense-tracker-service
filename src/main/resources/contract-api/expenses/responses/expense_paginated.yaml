@@ -1,12 +1,12 @@
 components:
   schemas:
-    ExpensePaginated:
+    ExpensePaginatedResponse:
       type: object
       properties:
         content:
           type: array
           items:
-            $ref: '../schemas/expense.yaml#/components/schemas/Expense'
+            $ref: '../schemas/expense.yaml#/components/schemas/ExpenseResponse'
         size:
           type: integer
           format: int32

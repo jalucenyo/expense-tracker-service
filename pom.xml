@@ -76,12 +76,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.34</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
@@ -189,11 +183,6 @@
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>1.18.34</version>
-                        </path>
-                        <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${org.mapstruct.version}</version>
@@ -203,18 +192,6 @@
                     <target>21</target>
                     <compilerArgs>--enable-preview</compilerArgs>
                     <skip>false</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>3.1.1</version>
-                <configuration>
-                    <tagNameFormat>@{project.version}</tagNameFormat>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <checkModificationExcludeList>
-                        pom.xml.releaseBackup,pom.xml.next,pom.xml.tag,release.properties
-                    </checkModificationExcludeList>
                 </configuration>
             </plugin>
             <plugin>
@@ -241,7 +218,6 @@
                             <generateModelTests>false</generateModelTests>
                             <apiPackage>dev.hanluc.expensetracker.expenses.infrastructure.api.controller</apiPackage>
                             <modelPackage>dev.hanluc.expensetracker.expenses.infrastructure.api.dto</modelPackage>
-                            <modelNameSuffix>Dto</modelNameSuffix>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
                                 <skipDefaultInterface>true</skipDefaultInterface>
@@ -304,20 +280,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <scm>
-        <connection>scm:git:${project.scm.url}</connection>
-        <developerConnection>scm:git:${project.scm.url}</developerConnection>
-        <url>https://github.com/jalucenyo/expense-tracker-service.git</url>
-        <tag>HEAD</tag>
-    </scm>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub</name>
-            <url>https://maven.pkg.github.com/jalucenyo/expense-tracker-service</url>
-        </repository>
-    </distributionManagement>
-
 </project>

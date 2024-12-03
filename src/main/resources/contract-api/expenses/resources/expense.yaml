@@ -17,7 +17,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../schemas/expense.yaml#/components/schemas/Expense'
+            $ref: '../schemas/expense.yaml#/components/schemas/ExpenseResponse'
     '404':
       description: Expense not found
     '401':
@@ -63,7 +63,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: '../schemas/expense.yaml#/components/schemas/Expense'
+          $ref: '../schemas/expense.yaml#/components/schemas/ExpenseResponse'
   responses:
     '200':
       description: Expense updated successfully

@@ -1,6 +1,6 @@
 components:
   schemas:
-    ExpenseCreate:
+    ExpenseCreateRequest:
       type: object
       properties:
         description:

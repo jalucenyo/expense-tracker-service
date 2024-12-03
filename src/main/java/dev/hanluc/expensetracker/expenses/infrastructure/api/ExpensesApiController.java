@@ -5,13 +5,13 @@ import dev.hanluc.expensetracker.expenses.application.DeleteExpenseUseCase;
 import dev.hanluc.expensetracker.expenses.application.FindByIdExpenseUseCase;
 import dev.hanluc.expensetracker.expenses.application.QueryExpenseUseCase;
 import dev.hanluc.expensetracker.expenses.domain.exception.ExpenseTrackerException;
+import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseCreateRequest;
+import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpensePaginatedResponse;
+import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseResponse;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.mappers.ExpenseCreateDtoMapper;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.mappers.ExpenseDtoMapper;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.mappers.ExpensePaginatedDtoMapper;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.controller.ExpensesApi;
-import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseCreateDto;
-import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseDto;
-import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpensePaginatedDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,8 +53,8 @@ public class ExpensesApiController implements ExpensesApi {
   }
 
   @Override
-  public ResponseEntity<Void> post(ExpenseCreateDto expenseCreateDto) {
-    final var expenseCreate = createRequestMapper.toExpenseCreate(expenseCreateDto);
+  public ResponseEntity<Void> post(ExpenseCreateRequest request) {
+    final var expenseCreate = createRequestMapper.toExpenseCreate(request);
 
     return createExpenseUseCase.create(expenseCreate)
       .fold(
@@ -83,7 +83,7 @@ public class ExpensesApiController implements ExpensesApi {
   }
 
   @Override
-  public ResponseEntity<ExpenseDto> get(String expenseId) {
+  public ResponseEntity<ExpenseResponse> get(String expenseId) {
     return findByIdExpenseUseCase.findById(expenseId)
       .fold(
         errors -> {
@@ -94,14 +94,13 @@ public class ExpensesApiController implements ExpensesApi {
   }
 
   @Override
-  public ResponseEntity<ExpensePaginatedDto> query(String filter, OffsetDateTime startDate, OffsetDateTime endDate, Pageable pageable) {
+  public ResponseEntity<ExpensePaginatedResponse> query(String filter, OffsetDateTime startDate, OffsetDateTime endDate, Pageable pageable) {
     return ResponseEntity.ok().body(queryResponseMapper.toExpensePaginatedDto(
       queryExpenseUseCase.query(new QueryExpenseUseCase.ExpenseQuery(filter, startDate, endDate, pageable))));
   }
 
-
   @Override
-  public ResponseEntity<Void> put(String expenseId, ExpenseDto expenseDto) {
+  public ResponseEntity<Void> put(String expenseId, ExpenseResponse expenseDto) {
     return null;
   }
 

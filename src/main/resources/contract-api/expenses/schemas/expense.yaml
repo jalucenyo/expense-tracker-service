@@ -1,6 +1,6 @@
 components:
   schemas:
-    Expense:
+    ExpenseResponse:
       type: object
       properties:
         id:

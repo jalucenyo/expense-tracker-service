@@ -1,7 +1,6 @@
 package dev.hanluc.expensetracker.expenses.domain;
 
 import dev.hanluc.expensetracker.common.domain.vo.Money;
-import dev.hanluc.expensetracker.expenses.application.CreateExpenseUseCase;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Embedded;
