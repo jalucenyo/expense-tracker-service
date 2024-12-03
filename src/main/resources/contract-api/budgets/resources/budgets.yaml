@@ -10,7 +10,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../responses/budget_paginated.yaml#/components/schemas/BudgetPaginated'
+            $ref: '../responses/budget_paginated.yaml#/components/schemas/BudgetPaginatedResponse'
     '401':
       description: Unauthorized
 
@@ -26,7 +26,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../parameters/budget_create.yaml#/components/schemas/BudgetCreate'
+          $ref: '../requests/budget_create.yaml#/components/schemas/BudgetCreateRequest'
   responses:
     '201':
       description: Budget created successfully
