@@ -1,8 +1,10 @@
 components:
   schemas:
-    BudgetCreate:
+    BudgetResponse:
       type: object
       properties:
+        id:
+          type: string
         name:
           type: string
         amount:

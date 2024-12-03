@@ -255,7 +255,6 @@
                             <generateModelTests>false</generateModelTests>
                             <apiPackage>dev.hanluc.expensetracker.budgets.infrastructure.api.controller</apiPackage>
                             <modelPackage>dev.hanluc.expensetracker.budgets.infrastructure.api.dto</modelPackage>
-                            <modelNameSuffix>Dto</modelNameSuffix>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
                                 <skipDefaultInterface>true</skipDefaultInterface>

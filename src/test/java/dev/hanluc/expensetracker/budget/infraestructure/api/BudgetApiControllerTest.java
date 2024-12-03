@@ -1,8 +1,9 @@
 package dev.hanluc.expensetracker.budget.infraestructure.api;
 
-import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetDto;
-import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetPaginatedDto;
-import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.MoneyDto;
+import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetCreateRequest;
+import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetPaginatedResponse;
+import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetResponse;
+import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.Money;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ class BudgetApiControllerTest {
   void should_find_budget_by_id() {
     final var budgetId = "22a2b9a8-a538-4a2a-ad2d-5e2dfca9a972";
 
-    ResponseEntity<BudgetDto> response = restTemplate.getForEntity("/budgets/" + budgetId, BudgetDto.class);
+    ResponseEntity<BudgetResponse> response = restTemplate.getForEntity("/budgets/" + budgetId, BudgetResponse.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     then(response.getBody()).isNotNull();
@@ -49,7 +50,7 @@ class BudgetApiControllerTest {
   @Disabled("This test is failing because the endpoint is not implemented")
   @Test
   void should_find_all_budgets() {
-    ResponseEntity<BudgetPaginatedDto> response = restTemplate.getForEntity("/budgets", BudgetPaginatedDto.class);
+    ResponseEntity<BudgetPaginatedResponse> response = restTemplate.getForEntity("/budgets", BudgetPaginatedResponse.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     then(response.getBody()).isNotNull();
@@ -59,9 +60,9 @@ class BudgetApiControllerTest {
 
   @Test
   void should_create_budget() {
-    BudgetDto createBudget = new BudgetDto()
+    BudgetCreateRequest createBudget = new BudgetCreateRequest()
       .name("Budget 1")
-      .amount(new MoneyDto().value(983L).exponent(2))
+      .amount(new Money().value(983L).exponent(2))
       .startDate(OffsetDateTime.now())
       .endDate(OffsetDateTime.now().plusMonths(1));
 

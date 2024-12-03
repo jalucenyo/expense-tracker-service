@@ -4,9 +4,9 @@ import dev.hanluc.expensetracker.budgets.applicaion.CreateBudgetUseCase;
 import dev.hanluc.expensetracker.budgets.applicaion.FindByIdBudgetUseCase;
 import dev.hanluc.expensetracker.budgets.domain.exception.BudgetException;
 import dev.hanluc.expensetracker.budgets.infrastructure.api.controller.BudgetsApi;
-import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetCreateDto;
-import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetDto;
-import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetPaginatedDto;
+import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetCreateRequest;
+import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetPaginatedResponse;
+import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetResponse;
 import dev.hanluc.expensetracker.budgets.infrastructure.api.mappers.BudgetCreateDtoMapper;
 import dev.hanluc.expensetracker.budgets.infrastructure.api.mappers.BudgetDtoMapper;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +35,7 @@ public class BudgetsApiController implements BudgetsApi {
   }
 
   @Override
-  public ResponseEntity<Void> createBudget(BudgetCreateDto budgetCreateDto) {
+  public ResponseEntity<Void> createBudget(BudgetCreateRequest budgetCreateDto) {
     final var budgetCreate = budgetCreateDtoMapper.toBudgetCreate(budgetCreateDto);
 
     return createBudgetUseCase.create(budgetCreate)
@@ -55,7 +55,7 @@ public class BudgetsApiController implements BudgetsApi {
   }
 
   @Override
-  public ResponseEntity<BudgetDto> getBudget(String budgetId) {
+  public ResponseEntity<BudgetResponse> getBudget(String budgetId) {
     return findByIdBudgetUseCase.findById(budgetId)
       .fold(
         errors -> {
@@ -66,7 +66,7 @@ public class BudgetsApiController implements BudgetsApi {
   }
 
   @Override
-  public ResponseEntity<BudgetPaginatedDto> getBudgets(Pageable pageable) {
+  public ResponseEntity<BudgetPaginatedResponse> getBudgets(Pageable pageable) {
     return null;
   }
 

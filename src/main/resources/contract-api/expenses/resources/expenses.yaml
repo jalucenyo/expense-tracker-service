@@ -49,7 +49,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../parameters/expense_create.yaml#/components/schemas/ExpenseCreateRequest'
+          $ref: '../requests/expense_create.yaml#/components/schemas/ExpenseCreateRequest'
   responses:
     '201':
       description: Expense created successfully
