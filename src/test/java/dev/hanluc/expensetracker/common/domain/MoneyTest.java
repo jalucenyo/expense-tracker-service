@@ -1,6 +1,5 @@
 package dev.hanluc.expensetracker.common.domain;
 
-import dev.hanluc.expensetracker.budgets.domain.exception.BudgetException;
 import dev.hanluc.expensetracker.common.domain.vo.Money;
 import org.junit.jupiter.api.Test;
 

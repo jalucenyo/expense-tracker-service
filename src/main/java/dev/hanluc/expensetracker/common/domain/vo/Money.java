@@ -1,6 +1,5 @@
 package dev.hanluc.expensetracker.common.domain.vo;
 
-import dev.hanluc.expensetracker.budgets.domain.exception.BudgetException;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
