@@ -3,7 +3,6 @@ package dev.hanluc.expensetracker.expenses.application;
 import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.common.domain.vo.Result;
 import dev.hanluc.expensetracker.expenses.domain.Expense;
-import dev.hanluc.expensetracker.expenses.domain.ExpenseBuilder;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -47,16 +46,16 @@ public interface CreateExpenseUseCase {
   ) {
 
     public Expense toExpense() {
-      return new ExpenseBuilder()
-        .setId(UUID.randomUUID())
-        .setAmount(amount)
-        .setDescription(description)
-        .setNotes(notes)
-        .setPaymentMethod(paymentMethod)
-        .setRecurrence(recurrence)
-        .setTransactionDate(transactionDate)
-        .setVendor(vendor)
-        .createExpense();
+      return new Expense(
+        UUID.randomUUID(),
+        amount,
+        description,
+        transactionDate,
+        paymentMethod,
+        vendor,
+        recurrence,
+        notes
+      );
     }
   }
 }

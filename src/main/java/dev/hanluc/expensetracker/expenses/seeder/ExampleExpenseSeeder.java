@@ -1,7 +1,7 @@
 package dev.hanluc.expensetracker.expenses.seeder;
 
 import dev.hanluc.expensetracker.common.domain.vo.Money;
-import dev.hanluc.expensetracker.expenses.domain.ExpenseBuilder;
+import dev.hanluc.expensetracker.expenses.domain.Expense;
 import dev.hanluc.expensetracker.expenses.domain.repository.ExpenseRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -24,11 +24,16 @@ public class ExampleExpenseSeeder implements ApplicationRunner {
   public void run(ApplicationArguments args) {
 
     final var exampleExpenses = List.of(
-      new ExpenseBuilder().setId(UUID.randomUUID()).setAmount(new Money(1000L, 2)).setDescription("Office Supplies").setTransactionDate(OffsetDateTime.now().minusDays(5)).setPaymentMethod("CREDIT_CARD").setVendor("Office Depot").setRecurrence("WEEKLY").setNotes("Purchased pens and notebooks").createExpense(),
-      new ExpenseBuilder().setId(UUID.randomUUID()).setAmount(new Money(4999L, 2)).setDescription("Software Subscription").setTransactionDate(OffsetDateTime.now().minusMonths(1)).setPaymentMethod("CASH").setVendor("Adobe").setRecurrence("MONTHLY").setNotes("Monthly subscription for Photoshop").createExpense(),
-      new ExpenseBuilder().setId(UUID.randomUUID()).setAmount(new Money(120000L, 2)).setDescription("Conference Registration").setTransactionDate(OffsetDateTime.now().minusWeeks(2)).setPaymentMethod("TRANSFER").setVendor("TechCon 2024").setRecurrence("WEEKLY").setNotes("Early bird registration for the tech conference").createExpense(),
-      new ExpenseBuilder().setId(UUID.randomUUID()).setAmount(new Money(8500L, 2)).setDescription("Team Lunch").setTransactionDate(OffsetDateTime.now().minusDays(10)).setPaymentMethod("CASH").setVendor("The Italian Place").setRecurrence("YEARLY").setNotes("Lunch with team to celebrate project completion").createExpense(),
-      new ExpenseBuilder().setId(UUID.randomUUID()).setAmount(new Money(150000L, 2)).setDescription("Hardware Purchase").setTransactionDate(OffsetDateTime.now().minusDays(3)).setPaymentMethod("CREDIT_CARD").setVendor("Best Buy").setRecurrence("YEARLY").setNotes("Purchased a new laptop for development").createExpense()
+      new Expense(UUID.randomUUID(), new Money(1000L, 2), "Office Supplies", OffsetDateTime.now().minusDays(5), "CREDIT_CARD", "Office Depot", "WEEKLY", "Purchased pens and notebooks"),
+      new Expense(UUID.randomUUID(), new Money(5000L, 2), "Groceries", OffsetDateTime.now().minusDays(2), "DEBIT_CARD", "Whole Foods", "MONTHLY", "Weekly grocery shopping for the family"),
+      new Expense(UUID.randomUUID(), new Money(750L, 2), "Coffee", OffsetDateTime.now().minusDays(1), "CASH", "Starbucks", "DAILY", "Morning coffee with a croissant"),
+      new Expense(UUID.randomUUID(), new Money(20000L, 2), "Car Maintenance", OffsetDateTime.now().minusDays(10), "CREDIT_CARD", "AutoFix Garage", "ANNUAL", "Oil change and tire replacement"),
+      new Expense(UUID.randomUUID(), new Money(15000L, 2), "Rent", OffsetDateTime.now().minusDays(15), "BANK_TRANSFER", "Landlord", "MONTHLY", "Paid monthly apartment rent"),
+      new Expense(UUID.randomUUID(), new Money(3200L, 2), "Electricity Bill", OffsetDateTime.now().minusDays(8), "BANK_TRANSFER", "City Electric", "MONTHLY", "Electricity usage for October"),
+      new Expense(UUID.randomUUID(), new Money(12000L, 2), "Travel", OffsetDateTime.now().minusDays(20), "CREDIT_CARD", "Airbnb", "ONE_TIME", "Booked a cabin for a weekend getaway"),
+      new Expense(UUID.randomUUID(), new Money(450L, 2), "Streaming Service", OffsetDateTime.now().minusDays(3), "PAYPAL", "Netflix", "MONTHLY", "Subscription for Netflix premium plan"),
+      new Expense(UUID.randomUUID(), new Money(8700L, 2), "Dining Out", OffsetDateTime.now().minusDays(6), "CASH", "The Fancy Steakhouse", "OCCASIONAL", "Anniversary dinner with family"),
+      new Expense(UUID.randomUUID(), new Money(2500L, 2), "Fuel", OffsetDateTime.now().minusDays(4), "DEBIT_CARD", "Shell Gas Station", "WEEKLY", "Filled up the car with gasoline")
     );
 
     expenseRepository.saveAll(exampleExpenses);
