@@ -28,12 +28,15 @@ public class Budget {
 
   private OffsetDateTime endDate;
 
-  public Budget(UUID id, String name, Money amount, OffsetDateTime startDate, OffsetDateTime endDate) {
+  private String category;
+
+  public Budget(UUID id, String name, Money amount, OffsetDateTime startDate, OffsetDateTime endDate, String category) {
     this.id = id;
     this.name = name;
     this.amount = amount;
     this.startDate = startDate;
     this.endDate = endDate;
+    this.category = category;
   }
 
   public UUID getId() {
@@ -48,32 +51,20 @@ public class Budget {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public Money getAmount() {
     return amount;
-  }
-
-  public void setAmount(Money amount) {
-    this.amount = amount;
   }
 
   public OffsetDateTime getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(OffsetDateTime startDate) {
-    this.startDate = startDate;
-  }
-
   public OffsetDateTime getEndDate() {
     return endDate;
   }
 
-  public void setEndDate(OffsetDateTime endDate) {
-    this.endDate = endDate;
+  public String getCategory() {
+    return category;
   }
 
   @Override
@@ -88,4 +79,16 @@ public class Budget {
     return Objects.hashCode(id);
   }
 
+  @Override
+  public String toString() {
+    return "Budget{" +
+      "id=" + id +
+      ", version=" + version +
+      ", name='" + name + '\'' +
+      ", amount=" + amount +
+      ", startDate=" + startDate +
+      ", endDate=" + endDate +
+      ", category='" + category + '\'' +
+      '}';
+  }
 }

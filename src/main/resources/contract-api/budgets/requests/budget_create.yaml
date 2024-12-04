@@ -13,3 +13,5 @@ components:
         endDate:
           type: string
           format: date
+        category:
+          type: string
