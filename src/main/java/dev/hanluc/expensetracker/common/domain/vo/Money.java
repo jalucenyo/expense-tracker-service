@@ -17,7 +17,7 @@ public record Money(
 
   public Money add(Money money) {
     if (money == null) {
-      throw new BudgetException("The money to add cannot be null.");
+      throw new IllegalArgumentException("The money to add cannot be null.");
     }
 
     if(this.exponent.equals(money.exponent)) {

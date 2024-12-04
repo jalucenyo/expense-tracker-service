@@ -34,7 +34,8 @@ class MoneyTest {
     Money money = new Money(100L, 2);
 
     thenThrownBy(() -> money.add(null))
-      .isInstanceOf(BudgetException.class);
+      .isInstanceOf(IllegalArgumentException.class)
+      .hasMessage("The money to add cannot be null.");
   }
 
 }
