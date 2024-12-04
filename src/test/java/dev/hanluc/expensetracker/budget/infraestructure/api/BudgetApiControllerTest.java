@@ -64,7 +64,8 @@ class BudgetApiControllerTest {
       .name("Budget 1")
       .amount(new Money().value(983L).exponent(2))
       .startDate(OffsetDateTime.now())
-      .endDate(OffsetDateTime.now().plusMonths(1));
+      .endDate(OffsetDateTime.now().plusMonths(1))
+      .category("Category 1");
 
     ResponseEntity<Void> response = restTemplate.postForEntity("/budgets", createBudget, Void.class);
 
