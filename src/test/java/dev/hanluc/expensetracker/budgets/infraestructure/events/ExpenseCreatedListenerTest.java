@@ -29,8 +29,6 @@ class ExpenseCreatedListenerTest {
   private BudgetRepository budgetRepository;
 
   @Test
-  @Sql(scripts = "classpath:db/budget/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-  @Sql(scripts = "classpath:db/budget/data-init.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
   void given_expense_created_event_then_increment_budget_consumed(Scenario scenario) {
     final var expectedUpdatedBudgetId = UUID.fromString("22a2b9a8-a538-4a2a-ad2d-5e2dfca9a972");
     final var createdExpenseEvent = new ExpenseCreatedEvent(
