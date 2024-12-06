@@ -1,4 +1,4 @@
-package dev.hanluc.expensetracker.expenses.domain.asserts;
+package dev.hanluc.expensetracker.common.asserts;
 
 import dev.hanluc.expensetracker.common.domain.vo.ResultError;
 import org.assertj.core.api.AbstractAssert;
@@ -25,6 +25,15 @@ public class ResultErrorAssert extends AbstractAssert<ResultErrorAssert, List<Re
       if (!found) {
         failWithMessage("Expected error to contain field <%s> but was not found", field);
       }
+    }
+    return this;
+  }
+
+  public ResultErrorAssert hasMessage(String message) {
+    isNotNull();
+    boolean found = actual.stream().anyMatch(e -> e.message().equals(message));
+    if (!found) {
+      failWithMessage("Expected error to contain message <%s> but was not found", message);
     }
     return this;
   }

@@ -26,7 +26,10 @@ public class CreateExpenseUseCaseService implements CreateExpenseUseCase {
       .fold(
         Result::failure,
         expense -> {
-          eventPublisher.publishEvent(new ExpenseCreatedEvent(expense.getId().toString()));
+          eventPublisher.publishEvent(new ExpenseCreatedEvent(
+            expenseCreate.category(),
+            expense.getAmount(),
+            expense.getTransactionDate()));
           return Result.success(expense);
         }
       );
