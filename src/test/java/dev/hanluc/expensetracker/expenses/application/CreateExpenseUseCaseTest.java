@@ -39,6 +39,7 @@ class CreateExpenseUseCaseTest {
       "",
       "",
       "",
+      "",
       "");
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
@@ -51,6 +52,7 @@ class CreateExpenseUseCaseTest {
   void given_null_fields_when_validate_then_return_invalid() {
     ExpenseCreate expenseCreate = new ExpenseCreate(
       new Money(1L, 1 ),
+      null,
       null,
       null,
       null,
@@ -73,7 +75,8 @@ class CreateExpenseUseCaseTest {
       "CREDIT_CARD",
       "vendor",
       "DAILY",
-      "");
+      "",
+      "Category 1");
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
 
@@ -91,7 +94,8 @@ class CreateExpenseUseCaseTest {
       "CREDIT_CARD",
       "vendor",
       "DAILY",
-      "");
+      "",
+      "Category 1");
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
 
@@ -108,7 +112,8 @@ class CreateExpenseUseCaseTest {
       "CREDIT_CARD",
       "vendor",
       "DAILY",
-      "");
+      "",
+      "Category 1");
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
 
@@ -124,7 +129,8 @@ class CreateExpenseUseCaseTest {
       "CREDIT_CARD",
       "vendor",
       "DAILY",
-      "");
+      "",
+      "Category 1");
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
 

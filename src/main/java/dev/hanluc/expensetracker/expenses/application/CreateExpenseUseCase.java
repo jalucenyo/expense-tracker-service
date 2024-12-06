@@ -41,7 +41,10 @@ public interface CreateExpenseUseCase {
     @NotNull
     String recurrence,
 
-    String notes
+    String notes,
+
+    @NotEmpty
+    String category
 
   ) {
 
@@ -54,7 +57,8 @@ public interface CreateExpenseUseCase {
         paymentMethod,
         vendor,
         recurrence,
-        notes
+        notes,
+        category
       );
     }
   }
