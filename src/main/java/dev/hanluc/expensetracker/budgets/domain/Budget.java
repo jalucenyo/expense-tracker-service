@@ -24,6 +24,9 @@ public class Budget {
   @Embedded(onEmpty = Embedded.OnEmpty.USE_EMPTY, prefix = "amount_")
   private Money amount;
 
+  @Embedded(onEmpty = Embedded.OnEmpty.USE_EMPTY, prefix = "consumed_")
+  private Money consumed;
+
   private OffsetDateTime startDate;
 
   private OffsetDateTime endDate;
@@ -41,10 +44,6 @@ public class Budget {
 
   public UUID getId() {
     return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
   }
 
   public String getName() {
@@ -65,6 +64,15 @@ public class Budget {
 
   public String getCategory() {
     return category;
+  }
+
+  public Money getConsumed() {
+    return consumed;
+  }
+
+  public Budget incrementConsumed(Money amount) {
+    consumed = (consumed != null && consumed.value() != null) ? consumed.add(amount) : amount;
+    return this;
   }
 
   @Override
