@@ -22,3 +22,5 @@ components:
           enum: [ NONE, DAILY, WEEKLY, BIWEEKLY, MONTHLY, YEARLY ]
         notes:
           type: string
+        category:
+          type: string
