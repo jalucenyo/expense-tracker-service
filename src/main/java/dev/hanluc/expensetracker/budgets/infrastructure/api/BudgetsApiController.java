@@ -24,10 +24,12 @@ public class BudgetsApiController implements BudgetsApi {
   private final FindByIdBudgetUseCase findByIdBudgetUseCase;
   private final BudgetDtoMapper budgetDtoMapper;
 
-  public BudgetsApiController(CreateBudgetUseCase createBudgetUseCase,
-                              BudgetCreateDtoMapper budgetCreateDtoMapper,
-                              FindByIdBudgetUseCase findByIdBudgetUseCase,
-                              BudgetDtoMapper budgetDtoMapper) {
+  public BudgetsApiController(
+    CreateBudgetUseCase createBudgetUseCase,
+    BudgetCreateDtoMapper budgetCreateDtoMapper,
+    FindByIdBudgetUseCase findByIdBudgetUseCase,
+    BudgetDtoMapper budgetDtoMapper
+  ) {
     this.createBudgetUseCase = createBudgetUseCase;
     this.budgetCreateDtoMapper = budgetCreateDtoMapper;
     this.findByIdBudgetUseCase = findByIdBudgetUseCase;
