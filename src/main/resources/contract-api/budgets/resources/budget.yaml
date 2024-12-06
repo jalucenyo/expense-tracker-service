@@ -15,7 +15,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../schemas/budget.yaml#/components/schemas/Budget'
+            $ref: '../responses/budget.yaml#/components/schemas/BudgetResponse'
     '404':
       description: Budget not found
     '401':

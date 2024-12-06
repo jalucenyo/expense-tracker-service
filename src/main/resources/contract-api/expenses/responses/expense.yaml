@@ -1,8 +1,10 @@
 components:
   schemas:
-    ExpenseCreateRequest:
+    ExpenseResponse:
       type: object
       properties:
+        id:
+          type: string
         description:
           type: string
         transactionDate:
@@ -19,4 +21,6 @@ components:
           type: string
           enum: [ NONE, DAILY, WEEKLY, BIWEEKLY, MONTHLY, YEARLY ]
         notes:
+          type: string
+        category:
           type: string

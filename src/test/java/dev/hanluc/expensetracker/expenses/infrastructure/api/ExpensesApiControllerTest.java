@@ -1,5 +1,6 @@
 package dev.hanluc.expensetracker.expenses.infrastructure.api;
 
+import dev.hanluc.expensetracker.TestContainersConfiguration;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseCreateRequest;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpensePaginatedResponse;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseResponse;
@@ -8,32 +9,24 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
-
-import java.time.*;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "classpath:db/data-init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
-@Sql(scripts = "classpath:db/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
+@Sql(scripts = "classpath:db/expense/data-init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:db/expense/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
+@Import(TestContainersConfiguration.class)
 class ExpensesApiControllerTest {
-
-  @Container
-  @ServiceConnection
-  static PostgreSQLContainer<?> postgresContainer = new PostgreSQLContainer<>(
-    DockerImageName.parse("postgres:latest"));
 
   @Autowired
   TestRestTemplate restTemplate;
@@ -50,21 +43,21 @@ class ExpensesApiControllerTest {
   }
 
   @Test
-  void should_filter_between_dates(){
-      final var startDate = ZonedDateTime.now().withZoneSameInstant(ZoneOffset.UTC).minusMonths(1).minusDays(1);
-      final var endDate = ZonedDateTime.now().withZoneSameInstant(ZoneOffset.UTC).minusMonths(1).plusDays(1);
-      ResponseEntity<ExpensePaginatedResponse> response = restTemplate.getForEntity(
-        "/expenses?startDate=" + startDate.format(DateTimeFormatter.ISO_DATE_TIME) + "&endDate="+ endDate.format(DateTimeFormatter.ISO_DATE_TIME),
-        ExpensePaginatedResponse.class);
+  void should_filter_between_dates() {
+    final var startDate = ZonedDateTime.now().withZoneSameInstant(ZoneOffset.UTC).minusMonths(1).minusDays(1);
+    final var endDate = ZonedDateTime.now().withZoneSameInstant(ZoneOffset.UTC).minusMonths(1).plusDays(1);
+    ResponseEntity<ExpensePaginatedResponse> response = restTemplate.getForEntity(
+      "/expenses?startDate=" + startDate.format(DateTimeFormatter.ISO_DATE_TIME) + "&endDate=" + endDate.format(DateTimeFormatter.ISO_DATE_TIME),
+      ExpensePaginatedResponse.class);
 
-      then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-      then(response.getBody()).isNotNull();
-      then(response.getBody().getContent()).hasSizeGreaterThan(0);
-      then(response.getBody().getContent())
-        .extracting("transactionDate")
-        .allMatch(date -> {
-          OffsetDateTime transactionDate = OffsetDateTime.parse(date.toString());
-          return transactionDate.isAfter(startDate.toOffsetDateTime()) && transactionDate.isBefore(endDate.toOffsetDateTime());
+    then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    then(response.getBody()).isNotNull();
+    then(response.getBody().getContent()).hasSizeGreaterThan(0);
+    then(response.getBody().getContent())
+      .extracting("transactionDate")
+      .allMatch(date -> {
+        OffsetDateTime transactionDate = OffsetDateTime.parse(date.toString());
+        return transactionDate.isAfter(startDate.toOffsetDateTime()) && transactionDate.isBefore(endDate.toOffsetDateTime());
       });
   }
 
@@ -93,8 +86,8 @@ class ExpensesApiControllerTest {
   }
 
   @Test
-  @Sql(scripts = "classpath:db/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-  @Sql(scripts = "classpath:db/data-init.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  @Sql(scripts = "classpath:db/expense/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  @Sql(scripts = "classpath:db/expense/data-init.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
   void should_create_expense() {
     ResponseEntity<Void> response = restTemplate.postForEntity("/expenses",
       new ExpenseCreateRequest()
@@ -104,6 +97,7 @@ class ExpensesApiControllerTest {
         .recurrence(ExpenseCreateRequest.RecurrenceEnum.NONE)
         .amount(new Money().value(983L).exponent(2))
         .paymentMethod(ExpenseCreateRequest.PaymentMethodEnum.CASH)
+        .category("Category 1")
       , Void.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
@@ -128,8 +122,8 @@ class ExpensesApiControllerTest {
   }
 
   @Test
-  @Sql(scripts = "classpath:db/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-  @Sql(scripts = "classpath:db/data-init.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  @Sql(scripts = "classpath:db/expense/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+  @Sql(scripts = "classpath:db/expense/data-init.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
   void should_delete_expense() {
 
     restTemplate.delete("/expenses/" + "8b540e0f-0a73-4459-8b91-8f3b9d71ec30");

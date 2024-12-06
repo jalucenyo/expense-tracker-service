@@ -1,14 +1,10 @@
 package dev.hanluc.expensetracker.budgets.applicaion;
 
 import dev.hanluc.expensetracker.budgets.domain.Budget;
-import dev.hanluc.expensetracker.budgets.domain.BudgetBuilder;
 import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.common.domain.vo.Result;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.OffsetDateTime;
@@ -32,17 +28,15 @@ public interface CreateBudgetUseCase {
     OffsetDateTime startDate,
 
     @NotNull
-    OffsetDateTime endDate
+    OffsetDateTime endDate,
+
+    @NotBlank
+    @Size(min = 3, max = 50)
+    String category
 
   ) {
     public Budget toBudget() {
-      return new BudgetBuilder()
-        .setId(UUID.randomUUID())
-        .setName(name)
-        .setAmount(amount)
-        .setStartDate(startDate)
-        .setEndDate(endDate)
-        .createBudget();
+      return new Budget(UUID.randomUUID(), name, amount, startDate, endDate, category);
     }
   }
 

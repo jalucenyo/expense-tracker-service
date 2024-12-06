@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class QueryBudgetUseCaseService implements FindByIdBudgetUseCase {
+public class FindByIdBudgetUseCaseService implements FindByIdBudgetUseCase {
 
   private final BudgetRepository budgetRepository;
 
-  public QueryBudgetUseCaseService(BudgetRepository budgetRepository) {
+  public FindByIdBudgetUseCaseService(BudgetRepository budgetRepository) {
     this.budgetRepository = budgetRepository;
   }
 

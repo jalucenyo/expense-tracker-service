@@ -38,6 +38,6 @@ public class BudgetBuilder {
   }
 
   public Budget createBudget() {
-    return new Budget(id, name, amount, startDate, endDate);
+    return new Budget(id, name, amount, startDate, endDate, ""); // TODO: Category budget
   }
 }

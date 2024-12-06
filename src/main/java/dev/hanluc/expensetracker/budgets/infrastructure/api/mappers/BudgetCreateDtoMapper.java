@@ -1,12 +1,12 @@
 package dev.hanluc.expensetracker.budgets.infrastructure.api.mappers;
 
-import dev.hanluc.expensetracker.budgets.applicaion.CreateBudgetUseCase;
-import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetCreateDto;
+import dev.hanluc.expensetracker.budgets.applicaion.CreateBudgetUseCase.BudgetCreate;
+import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetCreateRequest;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface BudgetCreateDtoMapper {
 
-  CreateBudgetUseCase.BudgetCreate toBudgetCreate(BudgetCreateDto createBudget);
+  BudgetCreate toBudgetCreate(BudgetCreateRequest createBudget);
 
 }
