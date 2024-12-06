@@ -1,4 +1,4 @@
-package dev.hanluc.expensetracker.budget.infraestructure.api;
+package dev.hanluc.expensetracker.budgets.infraestructure.api;
 
 import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetCreateRequest;
 import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetPaginatedResponse;
