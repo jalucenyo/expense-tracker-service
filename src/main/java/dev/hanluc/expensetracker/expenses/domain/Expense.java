@@ -34,7 +34,19 @@ public class Expense {
 
   private String notes;
 
-  public Expense(UUID id, Money amount, String description, OffsetDateTime transactionDate, String paymentMethod, String vendor, String recurrence, String notes) {
+  private String category;
+
+  public Expense(
+    UUID id,
+    Money amount,
+    String description,
+    OffsetDateTime transactionDate,
+    String paymentMethod,
+    String vendor,
+    String recurrence,
+    String notes,
+    String category
+  ) {
     this.id = id;
     this.amount = amount;
     this.description = description;
@@ -43,6 +55,7 @@ public class Expense {
     this.vendor = vendor;
     this.recurrence = recurrence;
     this.notes = notes;
+    this.category = category;
   }
 
   public UUID getId() {
@@ -109,6 +122,10 @@ public class Expense {
     this.notes = notes;
   }
 
+  public String getCategory() {
+    return category;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -133,6 +150,7 @@ public class Expense {
       ", vendor='" + vendor + '\'' +
       ", recurrence='" + recurrence + '\'' +
       ", notes='" + notes + '\'' +
+      ", category='" + category + '\'' +
       '}';
   }
 }
