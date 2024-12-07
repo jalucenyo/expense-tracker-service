@@ -20,10 +20,10 @@ public class ExpenseCreatedListener {
   public void onExpenseCreated(ExpenseCreatedEvent event) {
     expenseAllocateUseCase.allocate(new ExpenseAllocate(event.category(), event.amount(), event.transactionDate()))
       .fold(
-        _ -> {
+        errors -> {
           throw new BudgetException("Failed to allocate expense");
         },
-        _ -> null
+        budget -> null
       );
   }
 
