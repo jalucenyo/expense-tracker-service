@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PutApiController {
+public class PutExpensesApiController {
 
-  public PutApiController(
+  public PutExpensesApiController(
 
   ) {
 

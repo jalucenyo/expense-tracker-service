@@ -23,7 +23,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 @Import({TestContainersConfiguration.class})
 @Sql(scripts = "classpath:db/expense/data-init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = "classpath:db/expense/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
-class QueryApiControllerTest {
+class QueryExpensesApiControllerTest {
 
   @Autowired
   TestRestTemplate restTemplate;

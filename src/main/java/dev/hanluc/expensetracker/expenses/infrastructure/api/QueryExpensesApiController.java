@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 
 @Service
-public class QueryApiController {
+public class QueryExpensesApiController {
 
   private final QueryExpenseUseCase queryExpenseUseCase;
   private final ExpensePaginatedDtoMapper queryResponseMapper;
 
-  public QueryApiController(
+  public QueryExpensesApiController(
     QueryExpenseUseCase queryExpenseUseCase,
     ExpensePaginatedDtoMapper queryResponseMapper
   ) {

@@ -14,22 +14,22 @@ import java.time.OffsetDateTime;
 public class ExpensesApiController implements ExpensesApi {
 
   private final PostExpensesApiController postExpensesApiController;
-  private final DeleteApiController deleteApiController;
-  private final GetApiController getApiController;
-  private final QueryApiController queryApiController;
-  private final PutApiController putApiController;
+  private final DeleteExpensesApiController deleteExpensesApiController;
+  private final GetExpensesApiController getExpensesApiController;
+  private final QueryExpensesApiController queryExpensesApiController;
+  private final PutExpensesApiController putApiController;
 
   public ExpensesApiController(
     PostExpensesApiController postExpensesApiController,
-    DeleteApiController deleteApiController,
-    GetApiController getApiController,
-    QueryApiController queryApiController,
-    PutApiController putApiController
+    DeleteExpensesApiController deleteExpensesApiController,
+    GetExpensesApiController getExpensesApiController,
+    QueryExpensesApiController queryExpensesApiController,
+    PutExpensesApiController putApiController
   ) {
     this.postExpensesApiController = postExpensesApiController;
-    this.deleteApiController = deleteApiController;
-    this.queryApiController = queryApiController;
-    this.getApiController = getApiController;
+    this.deleteExpensesApiController = deleteExpensesApiController;
+    this.queryExpensesApiController = queryExpensesApiController;
+    this.getExpensesApiController = getExpensesApiController;
     this.putApiController = putApiController;
   }
 
@@ -40,17 +40,17 @@ public class ExpensesApiController implements ExpensesApi {
 
   @Override
   public ResponseEntity<Void> delete(String expenseId) {
-    return deleteApiController.delete(expenseId);
+    return deleteExpensesApiController.delete(expenseId);
   }
 
   @Override
   public ResponseEntity<ExpenseResponse> get(String expenseId) {
-    return getApiController.get(expenseId);
+    return getExpensesApiController.get(expenseId);
   }
 
   @Override
   public ResponseEntity<ExpensePaginatedResponse> query(String filter, OffsetDateTime startDate, OffsetDateTime endDate, Pageable pageable) {
-    return queryApiController.query(filter, startDate, endDate, pageable);
+    return queryExpensesApiController.query(filter, startDate, endDate, pageable);
   }
 
   @Override

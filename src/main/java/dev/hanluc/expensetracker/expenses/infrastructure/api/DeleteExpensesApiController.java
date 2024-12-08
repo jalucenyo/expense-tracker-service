@@ -6,11 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DeleteApiController {
+public class DeleteExpensesApiController {
 
   private final DeleteExpenseUseCase deleteExpenseUseCase;
 
-  public DeleteApiController(
+  public DeleteExpensesApiController(
     DeleteExpenseUseCase deleteExpenseUseCase
   ) {
     this.deleteExpenseUseCase = deleteExpenseUseCase;

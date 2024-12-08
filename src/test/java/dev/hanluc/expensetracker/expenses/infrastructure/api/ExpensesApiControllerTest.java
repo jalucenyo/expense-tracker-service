@@ -28,13 +28,13 @@ class ExpensesApiControllerTest {
   @MockBean
   PostExpensesApiController postExpensesApiController;
   @MockBean
-  GetApiController getApiController;
+  GetExpensesApiController getExpensesApiController;
   @MockBean
-  QueryApiController queryApiController;
+  QueryExpensesApiController queryExpensesApiController;
   @MockBean
-  DeleteApiController deleteApiController;
+  DeleteExpensesApiController deleteExpensesApiController;
   @MockBean
-  PutApiController putExpensesApiController;
+  PutExpensesApiController putExpensesApiController;
 
   @Test
   void should_post_then_call_post_controller() {
@@ -58,7 +58,7 @@ class ExpensesApiControllerTest {
 
     restTemplate.getForEntity("/expenses/" + expenseId, String.class);
 
-    verify(getApiController).get(expenseId);
+    verify(getExpensesApiController).get(expenseId);
   }
 
   @Test
@@ -71,7 +71,7 @@ class ExpensesApiControllerTest {
         + "&endDate=" + endDate.format(DateTimeFormatter.ISO_DATE_TIME),
       String.class);
 
-    verify(queryApiController).query(
+    verify(queryExpensesApiController).query(
       null,
       startDate,
       endDate,
@@ -85,7 +85,7 @@ class ExpensesApiControllerTest {
 
     restTemplate.delete("/expenses/" + expenseId);
 
-    verify(deleteApiController).delete(expenseId);
+    verify(deleteExpensesApiController).delete(expenseId);
   }
 
 }

@@ -8,12 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GetApiController {
+public class GetExpensesApiController {
 
   private final FindByIdExpenseUseCase findByIdExpenseUseCase;
   private final ExpenseDtoMapper expenseResponseMapper;
 
-  public GetApiController(
+  public GetExpensesApiController(
     FindByIdExpenseUseCase findByIdExpenseUseCase,
     ExpenseDtoMapper expenseResponseMapper
   ) {
