@@ -1,4 +1,4 @@
-package dev.hanluc.expensetracker.budgets.infraestructure.events;
+package dev.hanluc.expensetracker.budgets.infrastructure.events;
 
 import dev.hanluc.expensetracker.TestContainersConfiguration;
 import dev.hanluc.expensetracker.budgets.domain.Budget;
