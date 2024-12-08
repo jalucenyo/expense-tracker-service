@@ -1,23 +1,17 @@
-package dev.hanluc.expensetracker.common.infraestructure.api.advice;
+package dev.hanluc.expensetracker.common;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
-public class ValidationControllerAdvice {
+public class ProblemDetailUtils {
 
-  @ExceptionHandler(ConstraintViolationException.class)
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ProblemDetail handleConstraintViolation(ConstraintViolationException ex) {
+  public static ProblemDetail fromContraintViolation(ConstraintViolationException ex) {
     ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
     problemDetail.setTitle("Validation Error");
     problemDetail.setDetail("Constraint violations occurred.");
@@ -31,5 +25,7 @@ public class ValidationControllerAdvice {
     problemDetail.setProperty("errors", violations);
     return problemDetail;
   }
+
+  private ProblemDetailUtils() { }
 
 }

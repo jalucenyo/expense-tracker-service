@@ -3,6 +3,7 @@ run-name: ${{ github.ref }} verify PR.
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened]
 
 concurrency:
   group: verify-pr-${{ github.ref }}
@@ -24,19 +25,22 @@ jobs:
           java-version: '21'
           distribution: 'graalvm'
 
-      - name: Setup Maven Cache
+      - name: Cache SonarQube packages
         uses: actions/cache@v4
-        continue-on-error: true
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
-      - name: Compile and verify
-        run: mvn -B clean verify
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
-      - name: Sonar Cloud Scan
-        run: mvn -B sonar:sonar -Dsonar.projectKey=jalucenyo_expense-tracker-service -Dsonar.organization=jalucenyo -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+      - name: Build and analyze
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.organization=jalucenyo -Dsonar.projectKey=jalucenyo_expense-tracker-service
