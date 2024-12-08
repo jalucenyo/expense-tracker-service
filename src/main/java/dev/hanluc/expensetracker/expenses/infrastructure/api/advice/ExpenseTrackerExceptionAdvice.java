@@ -1,5 +1,6 @@
 package dev.hanluc.expensetracker.expenses.infrastructure.api.advice;
 
+import dev.hanluc.expensetracker.common.ProblemDetailUtils;
 import dev.hanluc.expensetracker.common.domain.vo.ResultError;
 import dev.hanluc.expensetracker.expenses.domain.exception.ExpenseTrackerException;
 import jakarta.validation.ConstraintViolation;
@@ -28,19 +29,8 @@ public class ExpenseTrackerExceptionAdvice {
 
   @ExceptionHandler(ConstraintViolationException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ProblemDetail handleConstraintViolation(ConstraintViolationException ex) {
-    ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-    problemDetail.setTitle("Validation Error");
-    problemDetail.setDetail("Constraint violations occurred.");
-
-    Map<String, List<String>> violations = ex.getConstraintViolations().stream()
-      .collect(Collectors.groupingBy(
-        violation -> violation.getPropertyPath().toString(),
-        Collectors.mapping(ConstraintViolation::getMessage, Collectors.toList())
-      ));
-
-    problemDetail.setProperty("errors", violations);
-    return problemDetail;
+  public ProblemDetail handleConstraintViolation(ConstraintViolationException exception) {
+    return ProblemDetailUtils.fromContraintViolation(exception);
   }
 
 }
