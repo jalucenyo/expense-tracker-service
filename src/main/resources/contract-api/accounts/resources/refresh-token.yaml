@@ -1,0 +1,18 @@
+post:
+  operationId: refreshToken
+  summary: Refresh token for account
+  tags:
+    - accounts
+  security:
+    - bearerAuth: [ ]
+  responses:
+    '200':
+      description: Account signed in successfully
+      content:
+          application/json:
+            schema:
+                $ref: '../responses/refresh-token.yaml#/components/schemas/RefreshTokenResponse'
+    '400':
+      description: Invalid data
+    '401':
+      description: Unauthorized
