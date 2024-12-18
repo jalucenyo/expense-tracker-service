@@ -1,0 +1,24 @@
+post:
+  operationId: post
+  summary: Create a new account
+  tags:
+    - accounts
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/account-create.yaml#/components/schemas/AccountCreateRequest'
+  responses:
+    '201':
+      description: Account created successfully
+      headers:
+        Location:
+          description: URI of the newly created account
+          schema:
+            type: string
+            format: uri
+    '400':
+      description: Invalid data
+    '401':
+      description: Unauthorized

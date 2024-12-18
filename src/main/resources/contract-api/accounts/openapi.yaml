@@ -1,0 +1,28 @@
+openapi: 3.0.0
+info:
+  title: Account API
+  description: API for managing accounts
+  version: 1.0.0
+
+servers:
+  - url: /api/v1
+    description: Development server
+
+tags:
+  - name: expenses
+    description: Expense operations
+
+paths:
+  /accounts:
+    $ref: './resources/accounts.yaml'
+  /accounts/sign-in:
+    $ref: './resources/sign-in.yaml'
+  /accounts/refresh-token:
+    $ref: './resources/refresh-token.yaml'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

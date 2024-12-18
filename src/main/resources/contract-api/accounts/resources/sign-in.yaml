@@ -1,0 +1,22 @@
+post:
+  operationId: signIn
+  summary: Sign-in account
+  tags:
+    - accounts
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/sign-in.yaml#/components/schemas/SignInRequest'
+  responses:
+    '200':
+      description: Account signed in successfully
+      content:
+          application/json:
+            schema:
+                $ref: '../responses/sign-in.yaml#/components/schemas/SignInResponse'
+    '400':
+      description: Invalid data
+    '401':
+      description: Unauthorized

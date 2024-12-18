@@ -1,0 +1,7 @@
+components:
+  schemas:
+    SignInResponse:
+      type: object
+      properties:
+        token:
+          type: string

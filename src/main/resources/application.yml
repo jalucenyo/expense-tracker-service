@@ -31,6 +31,13 @@ springdoc:
     enabled: true
     path: /doc/ui
 
+api:
+  security:
+    token:
+      expiration:
+        hours: 2
+      secret: a-very-strong-and-secure-secret-key
+
 logging:
   level:
     org.springframework.jdbc: DEBUG
