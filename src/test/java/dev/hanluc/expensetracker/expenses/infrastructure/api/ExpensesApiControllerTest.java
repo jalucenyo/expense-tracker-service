@@ -13,15 +13,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import({TestContainersConfiguration.class, TestRestTemplateConfig.class})
+@Sql(scripts = "classpath:db/expense/data-init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:db/expense/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 class ExpensesApiControllerTest {
 
   @Autowired
@@ -41,7 +44,7 @@ class ExpensesApiControllerTest {
 
   @BeforeEach
   public void setUp() {
-    tokenProvider.setToken(TokenProvider.GENERIC_USER);
+    tokenProvider.validToken();
   }
 
   @Test

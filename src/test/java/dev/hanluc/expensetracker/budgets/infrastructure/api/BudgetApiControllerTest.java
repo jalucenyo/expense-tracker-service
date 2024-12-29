@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -20,6 +21,8 @@ import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import({TestContainersConfiguration.class, TestRestTemplateConfig.class})
+@Sql(scripts = "classpath:db/budget/data-init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:db/budget/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 class BudgetApiControllerTest {
 
   @Autowired
@@ -30,12 +33,13 @@ class BudgetApiControllerTest {
 
   @MockBean
   PostBudgetsApiController postBudgetsApiController;
+
   @MockBean
   GetBudgetsApiController getBudgetsApiController;
 
   @BeforeEach
   public void setUp() {
-    tokenProvider.setToken(TokenProvider.GENERIC_USER);
+    tokenProvider.validToken();
   }
 
   @Test

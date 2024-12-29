@@ -21,9 +21,4 @@ public class TestRestTemplateConfig {
     return new RestTemplateBuilder().interceptors(Collections.singletonList(interceptor));
   }
 
-  @Bean
-  public Supplier<String> tokenSupplier() {
-    return new TokenProvider();
-  }
-
 }

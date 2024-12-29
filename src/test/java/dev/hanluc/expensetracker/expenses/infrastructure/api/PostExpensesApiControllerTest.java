@@ -34,7 +34,7 @@ class PostExpensesApiControllerTest {
 
   @BeforeEach
   public void setUp() {
-    tokenProvider.setToken(TokenProvider.GENERIC_USER);
+    tokenProvider.validToken();
   }
 
   @Test
