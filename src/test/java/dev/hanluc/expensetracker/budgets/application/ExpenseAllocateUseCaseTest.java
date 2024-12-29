@@ -3,7 +3,6 @@ package dev.hanluc.expensetracker.budgets.application;
 import dev.hanluc.expensetracker.budgets.mother.BudgetMother;
 import dev.hanluc.expensetracker.budgets.applicaion.ExpenseAllocateUseCase;
 import dev.hanluc.expensetracker.budgets.applicaion.ExpenseAllocateUseCase.ExpenseAllocate;
-import dev.hanluc.expensetracker.budgets.applicaion.ExpenseAllocateUseCaseService;
 import dev.hanluc.expensetracker.budgets.domain.Budget;
 import dev.hanluc.expensetracker.budgets.domain.repository.BudgetRepository;
 import dev.hanluc.expensetracker.common.asserts.ResultErrorAssert;
@@ -22,7 +21,7 @@ import static org.mockito.Mockito.when;
 class ExpenseAllocateUseCaseTest {
 
   private final BudgetRepository budgetRepository = mock(BudgetRepository.class);
-  private final ExpenseAllocateUseCase expenseAllocateUseCase = new ExpenseAllocateUseCaseService(budgetRepository);
+  private final ExpenseAllocateUseCase expenseAllocateUseCase = new ExpenseAllocateUseCase(budgetRepository);
 
   @Test
   void given_expense_when_budget_category_and_date_exist_then_increment_budget() {
