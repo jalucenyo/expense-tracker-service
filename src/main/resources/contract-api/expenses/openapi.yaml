@@ -17,3 +17,13 @@ paths:
     $ref: './resources/expenses.yaml'
   /expenses/{expenseId}:
     $ref: './resources/expense.yaml'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []

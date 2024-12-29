@@ -3,22 +3,55 @@ package dev.hanluc.expensetracker.expenses.application;
 import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.common.domain.vo.Result;
 import dev.hanluc.expensetracker.expenses.domain.Expense;
+import dev.hanluc.expensetracker.expenses.domain.events.ExpenseCreatedEvent;
+import dev.hanluc.expensetracker.expenses.domain.repository.ExpenseRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+@Service
 @Validated
-public interface CreateExpenseUseCase {
+public class CreateExpenseUseCase {
 
-  Result<Expense> create(@Valid ExpenseCreate expenseCreate);
+  private final ExpenseRepository expenseRepository;
+  private final ApplicationEventPublisher eventPublisher;
 
-  record ExpenseCreate(
+  public CreateExpenseUseCase(
+    ExpenseRepository expenseRepository,
+    ApplicationEventPublisher eventPublisher) {
+    this.expenseRepository = expenseRepository;
+    this.eventPublisher = eventPublisher;
+  }
+
+  @Transactional
+  public Result<Expense> create(@Valid ExpenseCreate expenseCreate) {
+    return Result.success(expenseRepository.save(expenseCreate.toExpense()))
+      .fold(
+        Result::failure,
+        expense -> {
+          sendDomainEvent(expense);
+          return Result.success(expense);
+        }
+      );
+  }
+
+  private void sendDomainEvent(Expense expense) {
+    eventPublisher.publishEvent(new ExpenseCreatedEvent(
+      expense.getCategory(),
+      expense.getAmount(),
+      expense.getTransactionDate()));
+  }
+
+  public record ExpenseCreate(
 
     @NotNull
     Money amount,
@@ -48,7 +81,7 @@ public interface CreateExpenseUseCase {
 
   ) {
 
-    public Expense toExpense() {
+    Expense toExpense() {
       return new Expense(
         UUID.randomUUID(),
         amount,
@@ -62,4 +95,5 @@ public interface CreateExpenseUseCase {
       );
     }
   }
+
 }
