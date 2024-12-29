@@ -1,8 +1,11 @@
 package dev.hanluc.expensetracker.expenses.infrastructure.api;
 
 import dev.hanluc.expensetracker.TestContainersConfiguration;
+import dev.hanluc.expensetracker.TestRestTemplateConfig;
+import dev.hanluc.expensetracker.TokenProvider;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseCreateRequest;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.Money;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,20 +13,25 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Pageable;
-import org.springframework.modulith.test.ApplicationModuleTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
 
-@ApplicationModuleTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import({TestContainersConfiguration.class})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import({TestContainersConfiguration.class, TestRestTemplateConfig.class})
+@Sql(scripts = "classpath:db/expense/data-init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:db/expense/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 class ExpensesApiControllerTest {
 
   @Autowired
   TestRestTemplate restTemplate;
+
+  @Autowired
+  private TokenProvider tokenProvider;
 
   @MockBean
   PostExpensesApiController postExpensesApiController;
@@ -33,8 +41,11 @@ class ExpensesApiControllerTest {
   QueryExpensesApiController queryExpensesApiController;
   @MockBean
   DeleteExpensesApiController deleteExpensesApiController;
-  @MockBean
-  PutExpensesApiController putExpensesApiController;
+
+  @BeforeEach
+  public void setUp() {
+    tokenProvider.validToken();
+  }
 
   @Test
   void should_post_then_call_post_controller() {

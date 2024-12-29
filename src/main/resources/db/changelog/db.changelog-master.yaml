@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/003-add-expense-category.sql
   - include:
       file: db/changelog/004-add-budget-consumed.sql
+  - include:
+      file: db/changelog/005-add-accounts-table.sql
