@@ -3,7 +3,6 @@ package dev.hanluc.expensetracker.expenses.application;
 import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.common.domain.vo.Result;
 import dev.hanluc.expensetracker.expenses.domain.Expense;
-import dev.hanluc.expensetracker.expenses.domain.events.ExpenseCreatedEvent;
 import dev.hanluc.expensetracker.expenses.domain.repository.ExpenseRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -34,21 +33,31 @@ public class CreateExpenseUseCase {
 
   @Transactional
   public Result<Expense> create(@Valid ExpenseCreate expenseCreate) {
-    return Result.success(expenseRepository.save(expenseCreate.toExpense()))
+
+    final var expense = createExpense(expenseCreate);
+
+    return Result.success(expenseRepository.save(expense))
       .fold(
         Result::failure,
-        expense -> {
-          sendDomainEvent(expense);
-          return Result.success(expense);
+        expenseCreated -> {
+          expense.pullDomainEvents().forEach(eventPublisher::publishEvent);
+          return Result.success(expenseCreated);
         }
       );
   }
 
-  private void sendDomainEvent(Expense expense) {
-    eventPublisher.publishEvent(new ExpenseCreatedEvent(
-      expense.getCategory(),
-      expense.getAmount(),
-      expense.getTransactionDate()));
+  private static Expense createExpense(ExpenseCreate expenseCreate) {
+    return Expense.create(
+      UUID.randomUUID(),
+      expenseCreate.amount(),
+      expenseCreate.description(),
+      expenseCreate.transactionDate(),
+      expenseCreate.paymentMethod(),
+      expenseCreate.vendor(),
+      expenseCreate.recurrence(),
+      expenseCreate.notes(),
+      expenseCreate.category()
+    );
   }
 
   public record ExpenseCreate(
@@ -80,20 +89,6 @@ public class CreateExpenseUseCase {
     String category
 
   ) {
-
-    Expense toExpense() {
-      return new Expense(
-        UUID.randomUUID(),
-        amount,
-        description,
-        transactionDate,
-        paymentMethod,
-        vendor,
-        recurrence,
-        notes,
-        category
-      );
-    }
   }
 
 }
