@@ -1,7 +1,10 @@
 package dev.hanluc.expensetracker.expenses.infrastructure.api;
 
 import dev.hanluc.expensetracker.TestContainersConfiguration;
+import dev.hanluc.expensetracker.TestRestTemplateConfig;
+import dev.hanluc.expensetracker.TokenProvider;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpensePaginatedResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +12,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.modulith.test.ApplicationModuleTest;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.time.OffsetDateTime;
@@ -19,14 +21,22 @@ import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
-@ApplicationModuleTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import({TestContainersConfiguration.class})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import({TestContainersConfiguration.class, TestRestTemplateConfig.class})
 @Sql(scripts = "classpath:db/expense/data-init.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @Sql(scripts = "classpath:db/expense/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 class QueryExpensesApiControllerTest {
 
   @Autowired
   TestRestTemplate restTemplate;
+
+  @Autowired
+  private TokenProvider tokenProvider;
+
+  @BeforeEach
+  public void setUp() {
+    tokenProvider.setToken(TokenProvider.GENERIC_USER);
+  }
 
   @Test
   void should_find_all_expenses() {
@@ -71,6 +81,5 @@ class QueryExpensesApiControllerTest {
         return transactionDate.isAfter(startDate.toOffsetDateTime()) && transactionDate.isBefore(endDate.toOffsetDateTime());
       });
   }
-
 
 }
