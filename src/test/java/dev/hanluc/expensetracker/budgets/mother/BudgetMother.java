@@ -1,31 +1,34 @@
 package dev.hanluc.expensetracker.budgets.mother;
 
+import static org.instancio.Select.field;
+
 import dev.hanluc.expensetracker.budgets.domain.Budget;
 import dev.hanluc.expensetracker.common.domain.vo.Money;
+import org.instancio.Instancio;
+import org.instancio.Model;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
-import java.time.OffsetDateTime;
-import java.util.UUID;
+import java.util.List;
 
 public class BudgetMother {
 
-  public static Budget onBudget() {
-    return new Budget(UUID.randomUUID(),
-      "My project budget test",
-      new Money(1000L, 2),
-      OffsetDateTime.parse("2024-12-01T00:00:00.000Z"),
-      OffsetDateTime.parse("2024-12-31T00:00:00.000Z"),
-      "Food");
+  public static Model<Budget> random(){
+    return Instancio.of(Budget.class)
+        .generate(field(Money.class, "value"), gen -> gen.longs().range(10000L, 20000L))
+        .generate(field(Money.class, "exponent"), gen -> gen.ints().range(1, 2))
+        .generate(field(Budget::getStartDate), gen -> gen.temporal().offsetDateTime().past())
+        .generate(field(Budget::getEndDate), gen -> gen.temporal().offsetDateTime().future())
+        .supply(field(Budget::getCategory), gen -> gen.oneOf("HOME", "FOOD", "TRANSPORT", "HEALTH", "EDUCATION"))
+        .toModel();
   }
 
-  public static Budget onBudgetConsumedGreaterThanZero() {
-    final var budget =  new Budget(UUID.randomUUID(),
-      "My project budget test",
-      new Money(1000L, 2),
-      OffsetDateTime.now(),
-      OffsetDateTime.now().plusDays(30),
-      "Food");
-    budget.incrementConsumed(new Money(100L, 2));
-    return budget;
+  public static Page<Budget> listOfBudgets(int size){
+    return new PageImpl<>(Instancio.ofList(random()).size(size).create());
+  }
+
+  public static Page<Budget> emptyListOfBudgets(){
+    return new PageImpl<>(List.of());
   }
 
 }
