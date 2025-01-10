@@ -27,7 +27,7 @@ public class GetBudgetsApiController {
         errors -> {
           throw new BudgetException(errors);
         },
-        budget -> ResponseEntity.ok().body(budgetResponseMapper.toBudgetDto(budget))
+        budget -> ResponseEntity.ok().body(budgetResponseMapper.toResponse(budget))
       );
   }
 

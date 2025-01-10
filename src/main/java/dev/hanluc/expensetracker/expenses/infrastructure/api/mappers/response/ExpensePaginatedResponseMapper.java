@@ -1,4 +1,4 @@
-package dev.hanluc.expensetracker.expenses.infrastructure.api.mappers;
+package dev.hanluc.expensetracker.expenses.infrastructure.api.mappers.response;
 
 import dev.hanluc.expensetracker.expenses.domain.Expense;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpensePaginatedResponse;
@@ -7,10 +7,10 @@ import org.springframework.data.domain.Page;
 
 @Mapper(
   componentModel = "spring",
-  uses = { ExpenseDtoMapper.class }
+  uses = { ExpenseResponseMapper.class }
 )
-public interface ExpensePaginatedDtoMapper {
+public interface ExpensePaginatedResponseMapper {
 
-  ExpensePaginatedResponse toExpensePaginatedDto(Page<Expense> expenses);
+  ExpensePaginatedResponse toResponse(Page<Expense> expenses);
 
 }
