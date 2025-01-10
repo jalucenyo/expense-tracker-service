@@ -3,7 +3,7 @@ package dev.hanluc.expensetracker.budgets.infrastructure.api;
 import dev.hanluc.expensetracker.budgets.applicaion.CreateBudgetUseCase;
 import dev.hanluc.expensetracker.budgets.domain.exception.BudgetException;
 import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetCreateRequest;
-import dev.hanluc.expensetracker.budgets.infrastructure.api.mappers.BudgetCreateDtoMapper;
+import dev.hanluc.expensetracker.budgets.infrastructure.api.mappers.request.BudgetCreateRequestMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -14,18 +14,18 @@ import java.net.URI;
 public class PostBudgetsApiController {
 
   private final CreateBudgetUseCase createBudgetUseCase;
-  private final BudgetCreateDtoMapper budgetCreateDtoMapper;
+  private final BudgetCreateRequestMapper mapper;
 
   public PostBudgetsApiController(
     CreateBudgetUseCase createBudgetUseCase,
-    BudgetCreateDtoMapper budgetCreateDtoMapper
+    BudgetCreateRequestMapper mapper
   ) {
     this.createBudgetUseCase = createBudgetUseCase;
-    this.budgetCreateDtoMapper = budgetCreateDtoMapper;
+    this.mapper = mapper;
   }
 
   public ResponseEntity<Void> post(BudgetCreateRequest budgetCreateDto) {
-    final var budgetCreate = budgetCreateDtoMapper.toBudgetCreate(budgetCreateDto);
+    final var budgetCreate = mapper.toBudgetCreate(budgetCreateDto);
 
     return createBudgetUseCase.create(budgetCreate)
       .fold(

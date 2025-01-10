@@ -3,7 +3,7 @@ package dev.hanluc.expensetracker.budgets.infrastructure.api;
 import dev.hanluc.expensetracker.budgets.applicaion.FindByIdBudgetUseCase;
 import dev.hanluc.expensetracker.budgets.domain.exception.BudgetException;
 import dev.hanluc.expensetracker.budgets.infrastructure.api.dto.BudgetResponse;
-import dev.hanluc.expensetracker.budgets.infrastructure.api.mappers.BudgetDtoMapper;
+import dev.hanluc.expensetracker.budgets.infrastructure.api.mappers.response.BudgetResponseMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 public class GetBudgetsApiController {
 
   private final FindByIdBudgetUseCase findByIdBudgetUseCase;
-  private final BudgetDtoMapper budgetDtoMapper;
+  private final BudgetResponseMapper budgetResponseMapper;
 
   public GetBudgetsApiController(
     FindByIdBudgetUseCase findByIdBudgetUseCase,
-    BudgetDtoMapper budgetDtoMapper
+    BudgetResponseMapper budgetResponseMapper
   ) {
     this.findByIdBudgetUseCase = findByIdBudgetUseCase;
-    this.budgetDtoMapper = budgetDtoMapper;
+    this.budgetResponseMapper = budgetResponseMapper;
   }
 
   public ResponseEntity<BudgetResponse> get(String budgetId) {
@@ -27,7 +27,7 @@ public class GetBudgetsApiController {
         errors -> {
           throw new BudgetException(errors);
         },
-        budget -> ResponseEntity.ok().body(budgetDtoMapper.toBudgetDto(budget))
+        budget -> ResponseEntity.ok().body(budgetResponseMapper.toBudgetDto(budget))
       );
   }
 
