@@ -23,11 +23,11 @@ public class BudgetMother {
         .toModel();
   }
 
-  public static Page<Budget> listOfBudgets(int size){
+  public static Page<Budget> randomPage(int size){
     return new PageImpl<>(Instancio.ofList(random()).size(size).create());
   }
 
-  public static Page<Budget> emptyListOfBudgets(){
+  public static Page<Budget> emptyPage(){
     return new PageImpl<>(List.of());
   }
 
