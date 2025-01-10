@@ -5,6 +5,7 @@ import dev.hanluc.expensetracker.budgets.domain.repository.BudgetRepository;
 import dev.hanluc.expensetracker.common.domain.vo.Money;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.OffsetDateTime;
@@ -12,6 +13,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Configuration
+@ConditionalOnProperty(
+    value = "budgets.seeder",
+    havingValue = "true",
+    matchIfMissing = false
+)
 public class ExampleBudgetSeeder implements ApplicationRunner {
 
   private final BudgetRepository budgetRepository;

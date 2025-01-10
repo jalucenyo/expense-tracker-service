@@ -12,14 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class BudgetsApiController implements BudgetsApi {
 
   private final PostBudgetsApiController postBudgetsApiController;
+
   private final GetBudgetsApiController getBudgetsApiController;
 
+  private final QueryBudgetsApiController queryBudgetsApiController;
+
   public BudgetsApiController(
-    PostBudgetsApiController postBudgetsApiController,
-    GetBudgetsApiController getBudgetsApiController
+      PostBudgetsApiController postBudgetsApiController,
+      GetBudgetsApiController getBudgetsApiController,
+      QueryBudgetsApiController queryBudgetsApiController
   ) {
     this.postBudgetsApiController = postBudgetsApiController;
     this.getBudgetsApiController = getBudgetsApiController;
+    this.queryBudgetsApiController = queryBudgetsApiController;
   }
 
   @Override
@@ -34,7 +39,7 @@ public class BudgetsApiController implements BudgetsApi {
 
   @Override
   public ResponseEntity<BudgetPaginatedResponse> getBudgets(Pageable pageable) {
-    return null;
+    return queryBudgetsApiController.query(pageable);
   }
 
 }
