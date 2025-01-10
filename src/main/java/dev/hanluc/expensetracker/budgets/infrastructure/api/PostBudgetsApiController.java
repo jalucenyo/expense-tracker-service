@@ -25,7 +25,7 @@ public class PostBudgetsApiController {
   }
 
   public ResponseEntity<Void> post(BudgetCreateRequest budgetCreateDto) {
-    final var budgetCreate = mapper.toBudgetCreate(budgetCreateDto);
+    final var budgetCreate = mapper.toDomain(budgetCreateDto);
 
     return createBudgetUseCase.create(budgetCreate)
       .fold(

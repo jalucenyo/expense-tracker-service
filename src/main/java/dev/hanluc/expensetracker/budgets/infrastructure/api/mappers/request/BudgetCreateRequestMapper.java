@@ -7,6 +7,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface BudgetCreateRequestMapper {
 
-  BudgetCreate toBudgetCreate(BudgetCreateRequest createBudget);
+  BudgetCreate toDomain(BudgetCreateRequest createBudget);
 
 }

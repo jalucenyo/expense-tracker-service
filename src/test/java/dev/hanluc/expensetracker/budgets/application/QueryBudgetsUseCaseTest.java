@@ -23,7 +23,7 @@ class QueryBudgetsUseCaseTest {
   void given_budgets_when_query_budgets_then_return_budgets() {
     int numberOfBudgets = 2;
     BudgetQuery query = new BudgetQuery(PageRequest.of(0, 10));
-    when(budgetRepository.findAll(query.pageable())).thenReturn(BudgetMother.listOfBudgets(numberOfBudgets));
+    when(budgetRepository.findAll(query.pageable())).thenReturn(BudgetMother.randomPage(numberOfBudgets));
 
     Page<Budget> result = queryBudgetsUseCase.query(query);
 
@@ -34,7 +34,7 @@ class QueryBudgetsUseCaseTest {
   @Test
   void given_empty_budgets_when_query_budgets_then_empty_page() {
     BudgetQuery query = new BudgetQuery(PageRequest.of(0, 10));
-    when(budgetRepository.findAll(query.pageable())).thenReturn(BudgetMother.emptyListOfBudgets());
+    when(budgetRepository.findAll(query.pageable())).thenReturn(BudgetMother.emptyPage());
 
     Page<Budget> result = queryBudgetsUseCase.query(query);
 
