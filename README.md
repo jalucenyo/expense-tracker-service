@@ -1,6 +1,14 @@
-# Expenses Management API
+# Expense Tracker Service
 
-This is a Spring Boot project that provides a REST API for managing expenses. The API allows users to create, read, update, and delete expense entries.
+Expense Tracker Service es una API REST desarrollada en Java y Spring Boot que permite gestionar los gastos personales de los usuarios y compartirlos con otros usuarios. El proyecto está diseñado para facilitar la organización financiera, proporcionando una forma intuitiva de registrar, categorizar y analizar gastos.
+
+## Motivación
+
+El objetivo de este proyecto es explorar el desarrollo de aplicaciones monolíticas utilizando Spring Boot, empleando patrones modernos y mejores prácticas para diseñar y construir un monolito escalable y mantenible.
+
+## Demo
+
+https://expenses-dev.hanluc.dev/doc/swagger-ui/index.html
 
 ## Features
 
@@ -21,6 +29,31 @@ This is a Spring Boot project that provides a REST API for managing expenses. Th
 - Docker
 - TestContainer
 - Swagger/OpenAPI for API documentation
+
+## Arquitectura
+
+El proyecto sigue una Arquitectura Limpia (Clean Architecture) con un diseño orientado a Domain-Driven Design (DDD). Este enfoque garantiza un código mantenible, escalable y bien organizado.
+
+```mermaid
+graph TD
+    subgraph Expenses
+        EXPENSES_APPLICATION[Application Layer]
+        EXPENSES_DOMAIN[Domain Layer]
+        EXPENSES_INFRAESTRUCTURE[Infrastructure Layer]
+    end
+
+    subgraph Budgets
+        BUDGETS_APPLIATION[Application Layer]
+        BUDGETS_DOMAIN[Domain Layer]
+        BUDGETS_INFRAESTRUCTURE[Infrastructure Layer]
+    end
+
+    EXPENSES_APPLICATION --> EXPENSES_DOMAIN
+    EXPENSES_DOMAIN --> EXPENSES_INFRAESTRUCTURE
+
+    BUDGETS_APPLIATION --> BUDGETS_DOMAIN
+    BUDGETS_DOMAIN --> BUDGETS_INFRAESTRUCTURE
+```
 
 ## Getting Started
 
