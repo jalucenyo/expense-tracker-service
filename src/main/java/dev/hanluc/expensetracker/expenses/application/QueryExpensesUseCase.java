@@ -10,11 +10,11 @@ import java.time.OffsetDateTime;
 import java.util.Optional;
 
 @Service
-public class QueryExpenseUseCase {
+public class QueryExpensesUseCase {
 
   private final ExpenseRepository expenseRepository;
 
-  public QueryExpenseUseCase(ExpenseRepository expenseRepository) {
+  public QueryExpensesUseCase(ExpenseRepository expenseRepository) {
     this.expenseRepository = expenseRepository;
   }
 
