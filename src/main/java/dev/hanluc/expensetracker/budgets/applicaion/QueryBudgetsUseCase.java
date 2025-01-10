@@ -4,7 +4,9 @@ import dev.hanluc.expensetracker.budgets.domain.Budget;
 import dev.hanluc.expensetracker.budgets.domain.repository.BudgetRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public class QueryBudgetsUseCase {
 
   private final BudgetRepository budgetRepository;
