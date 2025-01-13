@@ -4,6 +4,7 @@ import dev.hanluc.expensetracker.accounts.domain.Account;
 import dev.hanluc.expensetracker.accounts.domain.repository.AccountRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -11,6 +12,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Configuration
+@ConditionalOnProperty(
+    value = "accounts.seeder",
+    havingValue = "true",
+    matchIfMissing = false
+)
 public class UserSeeder implements ApplicationRunner {
 
   private final AccountRepository accountRepository;

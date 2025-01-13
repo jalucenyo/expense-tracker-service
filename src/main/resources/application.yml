@@ -38,6 +38,13 @@ api:
         hours: 2
       secret: a-very-strong-and-secure-secret-key
 
+accounts:
+  seeder: true
+expenses:
+  seeder: true
+budgets:
+  seeder: true
+
 logging:
   level:
     org.springframework.jdbc: DEBUG
