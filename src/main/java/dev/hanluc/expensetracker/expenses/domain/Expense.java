@@ -1,5 +1,6 @@
 package dev.hanluc.expensetracker.expenses.domain;
 
+import dev.hanluc.expensetracker.common.domain.DomainEvents;
 import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.expenses.domain.events.ExpenseCreatedEvent;
 import org.springframework.data.annotation.Id;
@@ -41,7 +42,7 @@ public class Expense {
   private String category;
 
   @Transient
-  private List<Object> domainEvents;
+  private DomainEvents domainEvents;
 
   public Expense(
     UUID id,
@@ -63,6 +64,7 @@ public class Expense {
     this.recurrence = recurrence;
     this.notes = notes;
     this.category = category;
+    this.domainEvents = new DomainEvents();
   }
 
   public static Expense create(
@@ -92,21 +94,8 @@ public class Expense {
     return expense;
   }
 
-  public List<Object> pullDomainEvents() {
-    var events = domainEvents;
-    domainEvents = new ArrayList<>();
-    return events;
-  }
-
   private void addCreatedEvent() {
-    addDomainEvent(new ExpenseCreatedEvent(category, amount, transactionDate));
-  }
-
-  private void addDomainEvent(Object event) {
-    if(domainEvents == null) {
-      domainEvents = new ArrayList<>();
-    }
-    domainEvents.add(event);
+    domainEvents.addEvent(new ExpenseCreatedEvent(category, amount, transactionDate));
   }
 
   public UUID getId() {
@@ -175,6 +164,10 @@ public class Expense {
 
   public String getCategory() {
     return category;
+  }
+
+  public DomainEvents getDomainEvents() {
+    return domainEvents;
   }
 
   @Override
