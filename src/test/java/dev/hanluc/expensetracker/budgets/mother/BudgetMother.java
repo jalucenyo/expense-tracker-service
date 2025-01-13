@@ -13,6 +13,12 @@ import java.util.List;
 
 public class BudgetMother {
 
+  private Model<Budget> mother;
+
+  public BudgetMother(Model<Budget> mother) {
+    this.mother = mother;
+  }
+
   public static Model<Budget> random(){
     return Instancio.of(Budget.class)
         .generate(field(Money.class, "value"), gen -> gen.longs().range(10000L, 20000L))
@@ -21,6 +27,21 @@ public class BudgetMother {
         .generate(field(Budget::getEndDate), gen -> gen.temporal().offsetDateTime().future())
         .supply(field(Budget::getCategory), gen -> gen.oneOf("HOME", "FOOD", "TRANSPORT", "HEALTH", "EDUCATION"))
         .toModel();
+  }
+
+  public static BudgetMother customize(){
+    return new BudgetMother(Instancio.of(random()).toModel());
+  }
+
+  public Budget create(){
+    return Instancio.of(mother).create();
+  }
+
+  public BudgetMother withConsumed(long value, int exponent) {
+    mother = Instancio.of(mother)
+        .set(field(Budget::getConsumed), new Money(value, exponent))
+        .toModel();
+    return this;
   }
 
   public static Page<Budget> randomPage(int size){

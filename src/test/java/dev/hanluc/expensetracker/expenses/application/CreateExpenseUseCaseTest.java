@@ -1,27 +1,30 @@
 package dev.hanluc.expensetracker.expenses.application;
 
-import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.expenses.application.CreateExpenseUseCase.ExpenseCreate;
-import dev.hanluc.expensetracker.expenses.application.asserts.ValidationAssert;
+import dev.hanluc.expensetracker.common.asserts.ValidationAssert;
 import dev.hanluc.expensetracker.expenses.domain.repository.ExpenseRepository;
+import dev.hanluc.expensetracker.expenses.mother.ExpenseCreateMother;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
-import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.mock;
 
 class CreateExpenseUseCaseTest {
 
   private final ExpenseRepository expenseRepository = mock(ExpenseRepository.class);
+
   private final CreateExpenseUseCase createExpenseUseCase = new CreateExpenseUseCase(null, null);
+
   private static Validator validator;
 
   @BeforeAll
@@ -30,112 +33,62 @@ class CreateExpenseUseCaseTest {
     validator = factory.getValidator();
   }
 
-  @Test
-  void given_null_or_empty_all_fields_when_validate_then_return_invalid() {
-    ExpenseCreate expenseCreate = new ExpenseCreate(
-      null,
-      "",
-      null,
-      "",
-      "",
-      "",
-      "",
-      "");
+  @ParameterizedTest
+  @MethodSource("provideEmptyField")
+  void given_empty_fields_when_validate_then_return_invalid(List<String> fields) {
+    ExpenseCreate expenseCreate = ExpenseCreateMother.withEmptyField(fields.toArray(String[]::new));
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
 
-    ValidationAssert.then(violations)
-      .hasFields("description", "amount", "transactionDate", "paymentMethod", "vendor");
+    ValidationAssert.then(violations).hasFields(fields.toArray(String[]::new));
   }
 
-  @Test
-  void given_null_fields_when_validate_then_return_invalid() {
-    ExpenseCreate expenseCreate = new ExpenseCreate(
-      new Money(1L, 1 ),
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null);
+  private static Stream<List<String>> provideEmptyField() {
+    return Stream.of(
+        List.of("description"),
+        List.of("paymentMethod"),
+        List.of("vendor"),
+        List.of("category"),
+        List.of("description", "paymentMethod", "vendor", "category")
 
-    Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
-
-    ValidationAssert.then(violations)
-      .hasFields("description", "transactionDate", "paymentMethod", "vendor", "recurrence");
+    );
   }
 
-  @Test
-  void given_amount_is_null_when_validate_then_return_invalid() {
-    ExpenseCreate expenseCreate = new ExpenseCreate(
-      null,
-      "description",
-      OffsetDateTime.now(),
-      "CREDIT_CARD",
-      "vendor",
-      "DAILY",
-      "",
-      "Category 1");
+  @ParameterizedTest
+  @MethodSource("provideNullField")
+  void given_null_fields_when_validate_then_return_invalid(List<String> fields) {
+    ExpenseCreate expenseCreate = ExpenseCreateMother.withNullField(fields.toArray(String[]::new));
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
 
-    ValidationAssert.then(violations)
-      .hasFields("amount");
+    ValidationAssert.then(violations).hasFields(fields.toArray(String[]::new));
   }
 
-  @Disabled
-  @Test
-  void given_amount_is_zero_when_validate_then_return_invalid() {
-    ExpenseCreate expenseCreate = new ExpenseCreate(
-      new Money(0L, 0),
-      "description",
-      OffsetDateTime.now(),
-      "CREDIT_CARD",
-      "vendor",
-      "DAILY",
-      "",
-      "Category 1");
-
-    Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
-
-    ValidationAssert.then(violations)
-      .hasFields("amount");
+  private static Stream<List<String>> provideNullField() {
+    return Stream.of(
+        List.of("amount"),
+        List.of("transactionDate"),
+        List.of("recurrence"),
+        List.of("amount", "transactionDate", "recurrence")
+    );
   }
 
   @Test
   void given_all_fields_correct_when_validate_then_return_valid() {
-    ExpenseCreate expenseCreate = new ExpenseCreate(
-      new Money(1L, 1),
-      "description",
-      OffsetDateTime.now(),
-      "CREDIT_CARD",
-      "vendor",
-      "DAILY",
-      "",
-      "Category 1");
+    ExpenseCreate expenseCreate = ExpenseCreateMother.random();
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
 
-    then(violations.isEmpty()).isTrue();
+    ValidationAssert.then(violations).isEmpty();
   }
 
   @Test
   void given_description_contains_invalid_chars_when_validate_then_return_invalid() {
-    ExpenseCreate expenseCreate = new ExpenseCreate(
-      new Money(1L, 1),
-      "\"''",
-      OffsetDateTime.now(),
-      "CREDIT_CARD",
-      "vendor",
-      "DAILY",
-      "",
-      "Category 1");
+    ExpenseCreate expenseCreate = ExpenseCreateMother.withFieldValue("description", "\"''");
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
 
-    ValidationAssert.then(violations)
-      .hasFields("description");
+    ValidationAssert.then(violations).hasFields("description");
   }
 
 }
