@@ -2,16 +2,17 @@ package dev.hanluc.expensetracker.expenses.mother;
 
 import static org.instancio.Select.field;
 
+import dev.hanluc.expensetracker.Mother;
 import dev.hanluc.expensetracker.common.domain.vo.Money;
 import dev.hanluc.expensetracker.expenses.domain.Expense;
 import org.instancio.Instancio;
 import org.instancio.Model;
 
-import java.util.List;
-
 public class ExpenseMother {
 
-  public static Model<Expense> random() {
+  private static final Mother<Expense> mother = new Mother<>(ExpenseMother::randomModel);
+
+  public static Model<Expense> randomModel() {
     return Instancio.of(Expense.class)
         .ignore(field("domainEvents"))
         .ignore(field("version"))
@@ -20,8 +21,8 @@ public class ExpenseMother {
         .toModel();
   }
 
-  public static List<Expense> random(int size) {
-    return Instancio.ofList(random()).size(size).create();
+  public static Mother<Expense> random() {
+    return mother;
   }
 
 }

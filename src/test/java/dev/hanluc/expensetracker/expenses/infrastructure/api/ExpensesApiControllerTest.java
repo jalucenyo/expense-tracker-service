@@ -3,8 +3,7 @@ package dev.hanluc.expensetracker.expenses.infrastructure.api;
 import dev.hanluc.expensetracker.TestContainersConfiguration;
 import dev.hanluc.expensetracker.TestRestTemplateConfig;
 import dev.hanluc.expensetracker.TokenProvider;
-import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseCreateRequest;
-import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.Money;
+import dev.hanluc.expensetracker.expenses.mother.ExpenseCreateRequestMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,14 +48,7 @@ class ExpensesApiControllerTest {
 
   @Test
   void should_post_then_call_post_controller() {
-    final var requesst = new ExpenseCreateRequest()
-      .description("Test 1")
-      .vendor("Vendor 1")
-      .transactionDate(OffsetDateTime.now(ZoneOffset.UTC))
-      .recurrence(ExpenseCreateRequest.RecurrenceEnum.NONE)
-      .amount(new Money().value(983L).exponent(2))
-      .paymentMethod(ExpenseCreateRequest.PaymentMethodEnum.CASH)
-      .category("Category 1");
+    final var requesst = ExpenseCreateRequestMother.random().create();
 
     restTemplate.postForEntity("/expenses", requesst, Void.class);
 

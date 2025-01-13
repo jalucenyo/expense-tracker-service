@@ -25,8 +25,8 @@ class ExpenseAllocateUseCaseTest {
 
   @Test
   void given_expense_when_budget_category_and_date_exist_then_increment_budget() {
-    final var expenseAllocate = ExpenseAllocateMother.randomWithAmount(100L, 2);
-    final var existBudget = BudgetMother.customize().withConsumed(0L, 2).create();
+    final var expenseAllocate = ExpenseAllocateMother.random().withFieldValue("amount", new Money(100L, 2));
+    final var existBudget = BudgetMother.random().withFieldValue("consumed", new Money(0L, 2));
     when(budgetRepository.findByCategoryAndDate(expenseAllocate.category(), expenseAllocate.transactionDate()))
         .thenReturn(Optional.of(existBudget));
     when(budgetRepository.save(any())).then(invocation -> invocation.getArgument(0));
@@ -39,7 +39,7 @@ class ExpenseAllocateUseCaseTest {
 
   @Test
   void given_expense_when_budget_category_and_date_not_exist_then_return_error() {
-    final var expenseAllocate = ExpenseAllocateMother.random();
+    final var expenseAllocate = ExpenseAllocateMother.random().create();
     when(budgetRepository.findByCategoryAndDate(expenseAllocate.category(), expenseAllocate.transactionDate()))
         .thenReturn(Optional.empty());
 

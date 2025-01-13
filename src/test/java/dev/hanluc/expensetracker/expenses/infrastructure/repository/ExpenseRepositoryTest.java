@@ -37,7 +37,7 @@ class ExpenseRepositoryTest {
   @Test
   void should_count_expenses_then_return_size_greater_zero() {
     int expensesSize = 2;
-    expenseRepository.saveAll(ExpenseMother.random(expensesSize));
+    expenseRepository.saveAll(ExpenseMother.random().insideList(expensesSize));
 
     then(expenseRepository.count()).isEqualTo(expensesSize);
   }
