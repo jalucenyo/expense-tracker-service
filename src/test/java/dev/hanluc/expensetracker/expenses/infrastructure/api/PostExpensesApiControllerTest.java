@@ -3,8 +3,8 @@ package dev.hanluc.expensetracker.expenses.infrastructure.api;
 import dev.hanluc.expensetracker.TestContainersConfiguration;
 import dev.hanluc.expensetracker.TestRestTemplateConfig;
 import dev.hanluc.expensetracker.TokenProvider;
-import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpenseCreateRequest;
-import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.Money;
+import dev.hanluc.expensetracker.common.asserts.ProblemDetailAssert;
+import dev.hanluc.expensetracker.expenses.mother.ExpenseCreateRequestMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
-
-import java.time.OffsetDateTime;
 
 import static org.assertj.core.api.BDDAssertions.then;
 
@@ -38,19 +36,10 @@ class PostExpensesApiControllerTest {
   }
 
   @Test
-  @Sql(scripts = "classpath:db/expense/data-cleanup.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-  @Sql(scripts = "classpath:db/expense/data-init.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
   void should_create_expense() {
-    ResponseEntity<Void> response = restTemplate.postForEntity("/expenses",
-      new ExpenseCreateRequest()
-        .description("Test 1")
-        .vendor("Vendor 1")
-        .transactionDate(OffsetDateTime.now())
-        .recurrence(ExpenseCreateRequest.RecurrenceEnum.NONE)
-        .amount(new Money().value(983L).exponent(2))
-        .paymentMethod(ExpenseCreateRequest.PaymentMethodEnum.CASH)
-        .category("Category 1")
-      , Void.class);
+    final var request = ExpenseCreateRequestMother.random().create();
+
+    ResponseEntity<Void> response = restTemplate.postForEntity("/expenses", request, Void.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     then(response.getHeaders().getLocation()).isNotNull();
@@ -60,17 +49,21 @@ class PostExpensesApiControllerTest {
 
   @Test
   void should_return_error_when_description_is_empty() {
-    ResponseEntity<ProblemDetail> response = restTemplate.postForEntity("/expenses",
-      new ExpenseCreateRequest()
-        .description("")
-        .vendor("")
-        .transactionDate(OffsetDateTime.now())
-        .recurrence(ExpenseCreateRequest.RecurrenceEnum.NONE)
-        .amount(new Money().value(983L).exponent(2))
-        .paymentMethod(ExpenseCreateRequest.PaymentMethodEnum.CASH)
-      , ProblemDetail.class);
+    final var request = ExpenseCreateRequestMother.random()
+        .withEmptyField("description")
+        .withNullField("amount")
+        .create();
+
+    ResponseEntity<ProblemDetail> response = restTemplate.postForEntity("/expenses", request, ProblemDetail.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    ProblemDetailAssert.then(response.getBody())
+        .hasTitle("Validation Error")
+        .hasDetail("Constraint violations occurred.")
+        .hasFieldError(
+            "create.expenseCreate.description",
+            "create.expenseCreate.amount"
+        );
   }
 
 }

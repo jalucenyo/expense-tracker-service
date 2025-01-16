@@ -5,6 +5,7 @@ import dev.hanluc.expensetracker.expenses.domain.Expense;
 import dev.hanluc.expensetracker.expenses.domain.repository.ExpenseRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.OffsetDateTime;
@@ -12,6 +13,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Configuration
+@ConditionalOnProperty(
+    value = "expenses.seeder",
+    havingValue = "true",
+    matchIfMissing = false
+)
 public class ExampleExpenseSeeder implements ApplicationRunner {
 
   private final ExpenseRepository expenseRepository;
@@ -32,7 +38,7 @@ public class ExampleExpenseSeeder implements ApplicationRunner {
       new Expense(UUID.randomUUID(), new Money(3200L, 2), "Electricity Bill", OffsetDateTime.now().minusDays(8), "BANK_TRANSFER", "City Electric", "MONTHLY", "Electricity usage for October", "Sustainability"),
       new Expense(UUID.randomUUID(), new Money(12000L, 2), "Travel", OffsetDateTime.now().minusDays(20), "CREDIT_CARD", "Airbnb", "ONE_TIME", "Booked a cabin for a weekend getaway", "Technology"),
       new Expense(UUID.randomUUID(), new Money(450L, 2), "Streaming Service", OffsetDateTime.now().minusDays(3), "CREDIT_CARD", "Netflix", "MONTHLY", "Subscription for Netflix premium plan", "Marketing"),
-      new Expense(UUID.randomUUID(), new Money(8700L, 2), "Dining Out", OffsetDateTime.now().minusDays(6), "CASH", "The Fancy Steakhouse", "OCCASIONAL", "Anniversary dinner with family", "Technology"),
+      new Expense(UUID.randomUUID(), new Money(8700L, 2), "Dining Out", OffsetDateTime.now().minusDays(6), "CASH", "The Fancy Steakhouse", "MONTHLY", "Anniversary dinner with family", "Technology"),
       new Expense(UUID.randomUUID(), new Money(2500L, 2), "Fuel", OffsetDateTime.now().minusDays(4), "DEBIT_CARD", "Shell Gas Station", "WEEKLY", "Filled up the car with gasoline", "Marketing")
     );
 

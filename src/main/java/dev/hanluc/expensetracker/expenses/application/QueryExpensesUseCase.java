@@ -12,6 +12,8 @@ import java.util.Optional;
 @Service
 public class QueryExpensesUseCase {
 
+  private static final int MAX_FROM_DAYS = 1;
+
   private final ExpenseRepository expenseRepository;
 
   public QueryExpensesUseCase(ExpenseRepository expenseRepository) {
@@ -19,7 +21,7 @@ public class QueryExpensesUseCase {
   }
 
   public Page<Expense> query(ExpenseQuery query) {
-    final var startDate = Optional.ofNullable(query.startDate()).orElse(OffsetDateTime.now().minusDays(1));
+    final var startDate = Optional.ofNullable(query.startDate()).orElse(OffsetDateTime.now().minusDays(MAX_FROM_DAYS));
     final var endDate = Optional.ofNullable(query.endDate()).orElse(OffsetDateTime.now());
 
     return expenseRepository

@@ -40,7 +40,7 @@ public class CreateExpenseUseCase {
       .fold(
         Result::failure,
         expenseCreated -> {
-          expense.pullDomainEvents().forEach(eventPublisher::publishEvent);
+          expense.getDomainEvents().pullEvents(eventPublisher::publishEvent);
           return Result.success(expenseCreated);
         }
       );
