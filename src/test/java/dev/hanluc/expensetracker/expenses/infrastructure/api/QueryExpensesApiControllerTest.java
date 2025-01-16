@@ -3,6 +3,7 @@ package dev.hanluc.expensetracker.expenses.infrastructure.api;
 import dev.hanluc.expensetracker.TestContainersConfiguration;
 import dev.hanluc.expensetracker.TestRestTemplateConfig;
 import dev.hanluc.expensetracker.TokenProvider;
+import dev.hanluc.expensetracker.expenses.asserts.ExpensePaginatedResponseAssert;
 import dev.hanluc.expensetracker.expenses.infrastructure.api.dto.ExpensePaginatedResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,20 +41,18 @@ class QueryExpensesApiControllerTest {
 
   @Test
   void should_find_all_expenses() {
+    int maxFromDays = 1;
     ResponseEntity<ExpensePaginatedResponse> response = restTemplate.getForEntity("/expenses", ExpensePaginatedResponse.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     then(response.getBody()).isNotNull();
-    then(response.getBody().getContent())
-      .extracting("transactionDate")
-      .allMatch(date -> {
-        OffsetDateTime transactionDate = OffsetDateTime.parse(date.toString());
-        return transactionDate.isAfter(OffsetDateTime.now().minusDays(1)) && transactionDate.isBefore(OffsetDateTime.now());
-      });
+
+    ExpensePaginatedResponseAssert.then(response.getBody())
+        .betweenTransactionDate(OffsetDateTime.now().minusDays(maxFromDays), OffsetDateTime.now());
   }
 
   @Test
-  void should_find_paginated_expenses() {
+  void should_find_paginated_size_then_response_size_content_expenses() {
     ResponseEntity<ExpensePaginatedResponse> response = restTemplate.getForEntity("/expenses?page=0&size=2", ExpensePaginatedResponse.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -74,12 +73,8 @@ class QueryExpensesApiControllerTest {
     then(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     then(response.getBody()).isNotNull();
     then(response.getBody().getContent()).hasSizeGreaterThan(0);
-    then(response.getBody().getContent())
-      .extracting("transactionDate")
-      .allMatch(date -> {
-        OffsetDateTime transactionDate = OffsetDateTime.parse(date.toString());
-        return transactionDate.isAfter(startDate.toOffsetDateTime()) && transactionDate.isBefore(endDate.toOffsetDateTime());
-      });
+    ExpensePaginatedResponseAssert.then(response.getBody())
+        .betweenTransactionDate(startDate.toOffsetDateTime(), endDate.toOffsetDateTime());
   }
 
 }
