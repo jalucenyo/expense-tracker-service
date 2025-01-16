@@ -5,7 +5,6 @@ import static org.instancio.Select.field;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.instancio.Instancio;
 import org.instancio.Model;
@@ -15,9 +14,9 @@ import org.springframework.data.domain.PageImpl;
 
 public class Mother<T> {
 
-  private final Supplier<Model<T>> randomBase;
+  private Model<T> randomBase;
 
-  public Mother(Supplier<Model<T>> randomGenerator) {
+  public Mother(Model<T> randomGenerator) {
     this.randomBase = randomGenerator;
   }
 
@@ -26,36 +25,40 @@ public class Mother<T> {
   }
 
   public Page<T> insidePage(int size) {
-    return new PageImpl<>(Instancio.ofList(randomBase.get()).size(size).create());
+    return new PageImpl<>(Instancio.ofList(randomBase).size(size).create());
   }
 
   public List<T> insideList(int size) {
-    return Instancio.ofList(randomBase.get()).size(size).create();
+    return Instancio.ofList(randomBase).size(size).create();
   }
 
 
-  public T withNullField(String... fields) {
+  public Mother<T> withNullField(String... fields) {
     final var fieldSelectors = Arrays.stream(fields).map(Select::field).toArray(org.instancio.Selector[]::new);
-    return Instancio.of(randomBase.get())
+    randomBase = Instancio.of(randomBase)
         .set(all(fieldSelectors), null)
-        .create();
+        .toModel();
+    return this;
   }
 
-  public T withEmptyField(String... fields) {
+  public Mother<T> withEmptyField(String... fields) {
     final var fieldSelectors = Arrays.stream(fields).map(Select::field).toArray(org.instancio.Selector[]::new);
-    return Instancio.of(randomBase.get())
+    randomBase = Instancio.of(randomBase)
         .set(all(fieldSelectors), "")
-        .create();
+        .toModel();
+    return this;
+
   }
 
-  public T withFieldValue(String field, Object value) {
-    return Instancio.of(randomBase.get())
+  public Mother<T> withFieldValue(String field, Object value) {
+    randomBase = Instancio.of(randomBase)
         .set(field(field), value)
-        .create();
+        .toModel();
+    return this;
   }
 
   public T create() {
-    return Instancio.of(randomBase.get()).create();
+    return Instancio.of(randomBase).create();
   }
 
 }

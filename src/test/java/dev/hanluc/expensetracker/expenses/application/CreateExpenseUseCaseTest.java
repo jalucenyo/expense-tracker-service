@@ -36,7 +36,8 @@ class CreateExpenseUseCaseTest {
   @ParameterizedTest
   @MethodSource("provideEmptyField")
   void given_empty_fields_when_validate_then_return_invalid(List<String> fields) {
-    ExpenseCreate expenseCreate = ExpenseCreateMother.random().withEmptyField(fields.toArray(String[]::new));
+    ExpenseCreate expenseCreate = ExpenseCreateMother.random()
+        .withEmptyField(fields.toArray(String[]::new)).create();
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
 
@@ -57,7 +58,8 @@ class CreateExpenseUseCaseTest {
   @ParameterizedTest
   @MethodSource("provideNullField")
   void given_null_fields_when_validate_then_return_invalid(List<String> fields) {
-    ExpenseCreate expenseCreate = ExpenseCreateMother.random().withNullField(fields.toArray(String[]::new));
+    ExpenseCreate expenseCreate = ExpenseCreateMother.random()
+        .withNullField(fields.toArray(String[]::new)).create();
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
 
@@ -84,7 +86,9 @@ class CreateExpenseUseCaseTest {
 
   @Test
   void given_description_contains_invalid_chars_when_validate_then_return_invalid() {
-    ExpenseCreate expenseCreate = ExpenseCreateMother.random().withFieldValue("description", "\"''");
+    ExpenseCreate expenseCreate = ExpenseCreateMother.random()
+        .withFieldValue("description", "\"''")
+        .create();
 
     Set<ConstraintViolation<ExpenseCreate>> violations = validator.validate(expenseCreate);
 
