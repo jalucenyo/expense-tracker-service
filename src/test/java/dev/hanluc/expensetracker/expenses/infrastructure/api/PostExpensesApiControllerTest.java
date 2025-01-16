@@ -3,6 +3,7 @@ package dev.hanluc.expensetracker.expenses.infrastructure.api;
 import dev.hanluc.expensetracker.TestContainersConfiguration;
 import dev.hanluc.expensetracker.TestRestTemplateConfig;
 import dev.hanluc.expensetracker.TokenProvider;
+import dev.hanluc.expensetracker.common.asserts.ProblemDetailAssert;
 import dev.hanluc.expensetracker.expenses.mother.ExpenseCreateRequestMother;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,11 +49,21 @@ class PostExpensesApiControllerTest {
 
   @Test
   void should_return_error_when_description_is_empty() {
-    final var request = ExpenseCreateRequestMother.random().withEmptyField("description");
+    final var request = ExpenseCreateRequestMother.random()
+        .withEmptyField("description")
+        .withNullField("amount")
+        .create();
 
     ResponseEntity<ProblemDetail> response = restTemplate.postForEntity("/expenses", request, ProblemDetail.class);
 
     then(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    ProblemDetailAssert.then(response.getBody())
+        .hasTitle("Validation Error")
+        .hasDetail("Constraint violations occurred.")
+        .hasFieldError(
+            "create.expenseCreate.description",
+            "create.expenseCreate.amount"
+        );
   }
 
 }
